@@ -1,9 +1,14 @@
-﻿namespace Online_CV_Builder.DTOs.ResumeRelatedDTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Online_CV_Builder.DTOs.ResumeRelatedDTOs
 {
     public class ResumeDTO
     {
         public int ResumeId { get; set; }
         public int UserId { get; set; }
+
+        [Required(ErrorMessage = "Title is required.")]
+        [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters.")]
         public string Title { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
