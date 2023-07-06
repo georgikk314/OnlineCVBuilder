@@ -22,11 +22,12 @@ namespace Online_CV_Builder.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateResume([FromBody] ResumeDTO resumeDto)
         {
-            var resume = await _resumeService.CreateResumeAsync(resumeDto.UserId, resumeDto.Title);
+            var resume = await _resumeService.CreateResumeAsync(resumeDto);
 
             return Ok(resume);
         }
 
+        /*
         // GET api/resumes/{id}
         [HttpGet("{id}")]
         
@@ -37,6 +38,6 @@ namespace Online_CV_Builder.Controllers
 
         // DELETE api/resumes/{id}
         [HttpDelete("{id}")]
-        
+        */
     }
 }

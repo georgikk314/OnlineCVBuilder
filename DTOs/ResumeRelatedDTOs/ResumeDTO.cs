@@ -2,6 +2,7 @@
 {
     public class ResumeDTO
     {
+        public int ResumeId { get; set; }
         public int UserId { get; set; }
         public string Title { get; set; }
         public DateTime CreationDate { get; set; }
@@ -12,5 +13,6 @@
         public List<SkillDTO> Skills { get; set; }
         public List<LanguageDTO> Languages { get; set; }
         public List<LocationDTO> Locations { get; set; }
+        public List<CertificateDTO> Certificates { get; set; }
     }
 }
