@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>CV Template</title>
+    <style>
+        /* Define your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .section-content {
+            margin-left: 20px;
+        }
+
+            .section-content p {
+                margin-bottom: 5px;
+            }
+
+            .section-content ul {
+                list-style-type: square;
+                margin-left: 20px;
+                margin-bottom: 10px;
+            }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="name">@Model.PersonalInfo.FullName</h1>
+        <p>Email: @Model.PersonalInfo.Email</p>
+        <p>Phone: @Model.PersonalInfo.PhoneNumber</p>
+        <p>Address: @Model.PersonalInfo.Address</p>
+    </div>
+
+    <div class="section">
+        <h2 class="section-header">Education</h2>
+        <div class="section-content">
+            @foreach (var education in Model.Education)
+            {
+                <p>
+                    <strong>@education.InstituteName</strong><br />
+                    @education.Degree in @education.FieldOfStudy<br />
+                    @education.StartDate.ToShortDateString() - @education.EndDate.ToShortDateString()
+                </p>
+            }
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-header">Work Experience</h2>
+        <div class="section-content">
+            @foreach (var experience in Model.WorkExperience)
+            {
+                <p>
+                    <strong>@experience.CompanyName</strong><br />
+                    @experience.Position<br />
+                    @experience.StartDate.ToShortDateString() - @experience.EndDate.ToShortDateString()<br />
+                    @experience.Description
+                </p>
+            }
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-header">Skills</h2>
+        <div class="section-content">
+            <ul>
+                @foreach (var skill in Model.Skills)
+                {
+                    <li>@skill.SkillName</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-header">Languages</h2>
+        <div class="section-content">
+            @foreach (var language in Model.Languages)
+            {
+                <p>@language.LanguageName - @language.ProficiencyLevel</p>
+            }
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-header">Certificates</h2>
+        <div class="section-content">
+            @foreach (var certificate in Model.Certificates)
+            {
+                <p>
+                    <strong>@certificate.CertificateName</strong><br />
+                    Issued by: @certificate.IssuingOrganization<br />
+                    Issue Date: @certificate.IssueDate.ToShortDateString()
+                </p>
+            }
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-header">Locations</h2>
+        <div class="section-content">
+            @foreach (var location in Model.Locations)
+            {
+                <p>@location.City, @location.State, @location.Country</p>
+            }
+        </div>
+    </div>
+
+</body>
+</html>

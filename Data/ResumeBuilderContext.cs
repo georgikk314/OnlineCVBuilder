@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder.Data.Entities;
+using Online_CV_Builder.Models;
 
 namespace Online_CV_Builder.Data
 {
@@ -10,6 +11,21 @@ namespace Online_CV_Builder.Data
         {
             
         }
+
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Resumes> Resumes { get; set; }
+        public DbSet<PersonalInfo> PersonalInfos { get; set; }
+        public DbSet<Certificates> Certificates { get; set; }
+        public DbSet<WorkExperience> WorkExperiences { get; set; }
+        public DbSet<Skills> Skills { get; set; }
+        public DbSet<ResumeSkills> ResumeSkills { get; set; }
+        public DbSet<Education> Education { get; set; }
+        public DbSet<Languages> Languages { get; set; }
+        public DbSet<ResumeLanguages> ResumeLanguages { get; set; }
+        public DbSet<Locations> Locations { get; set; }
+        public DbSet<ResumeLocations> ResumeLocations { get; set; }
+        public DbSet<Templates> Templates { get; set; }
+        public DbSet<ResumeTemplates> ResumeTemplates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,21 +83,25 @@ namespace Online_CV_Builder.Data
                 .HasOne(rt => rt.Resume)
                 .WithMany(r => r.ResumeTemplates)
                 .HasForeignKey(rt => rt.ResumeId);
+
+
+            modelBuilder.Entity<Templates>().HasData
+                (
+                    new Templates
+                    {
+                        Id = 1,
+                        TemplateName = "CoolTemplate",
+                        TemplateFilePath = @"C:\Online CV Builder\Online CV Builder"
+                    },
+                    new Templates
+                    {
+                        Id = 2,
+                        TemplateName = "VeryCoolTemplate",
+                        TemplateFilePath = @"C:\Online CV Builder\Online CV Builder"
+                    }
+                );
         }
 
-        public DbSet<Users> Users { get; set; }
-        public DbSet<Resumes> Resumes { get; set; }
-        public DbSet<PersonalInfo> PersonalInfos { get; set; }
-        public DbSet<Certificates> Certificates { get; set; }
-        public DbSet<WorkExperience> WorkExperiences { get; set; }
-        public DbSet<Skills> Skills { get; set; }
-        public DbSet<ResumeSkills> ResumeSkills { get; set; }
-        public DbSet<Education> Education { get; set; }
-        public DbSet<Languages> Languages { get; set; }
-        public DbSet<ResumeLanguages> ResumeLanguages { get; set; }
-        public DbSet<Locations> Locations { get; set; }
-        public DbSet<ResumeLocations> ResumeLocations { get; set; }
-        public DbSet<Templates> Templates { get; set; }
-        public DbSet<ResumeTemplates> ResumeTemplates { get; set; }
+       
     }
 }

@@ -11,3 +11,4 @@ namespace Online_CV_Builder.Data.Entities
         public virtual ICollection<ResumeTemplates> ResumeTemplates { get; set; }
     }
 }
+
