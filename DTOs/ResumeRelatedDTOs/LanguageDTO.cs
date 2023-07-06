@@ -1,4 +1,4 @@
-﻿namespace Online_CV_Builder.DTOs
+﻿namespace Online_CV_Builder.DTOs.ResumeRelatedDTOs
 {
     public class LanguageDTO
     {

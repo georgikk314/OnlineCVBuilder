@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Online_CV_Builder.Data.Entities;
-using Online_CV_Builder.DTOs;
+using Online_CV_Builder.DTOs.ResumeRelatedDTOs;
 using Online_CV_Builder.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
