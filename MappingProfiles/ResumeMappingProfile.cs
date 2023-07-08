@@ -9,37 +9,31 @@ namespace Online_CV_Builder.MappingProfiles
         public ResumeMappingProfile()
         {
             CreateMap<Resumes, ResumeDTO>()
-                .ReverseMap();
+                .ReverseMap().PreserveReferences();
 
             CreateMap<PersonalInfo, PersonalInfoDTO>()
-                .ReverseMap();
+                .ReverseMap().PreserveReferences();
 
-            CreateMap<Education, EducationDTO>()
-                .ReverseMap();
+            CreateMap<Education, EducationDTO>().ReverseMap().PreserveReferences();
 
-            CreateMap<WorkExperience, WorkExperienceDTO>()
-                .ReverseMap();
+            CreateMap<WorkExperience, WorkExperienceDTO>().ReverseMap().PreserveReferences();
 
-            CreateMap<Skills, SkillDTO>()
-                .ReverseMap();
+            CreateMap<Skills, SkillDTO>().ReverseMap().PreserveReferences();
 
-            CreateMap<Languages, LanguageDTO>()
-                .ReverseMap();
+            CreateMap<Languages, LanguageDTO>().ReverseMap().PreserveReferences();
 
-            CreateMap<Locations, LocationDTO>()
-                .ReverseMap();
+            CreateMap<Locations, LocationDTO>().ReverseMap().PreserveReferences();
 
-            CreateMap<Certificates, CertificateDTO>()
-                .ReverseMap();
+            CreateMap<Certificates, CertificateDTO>().ReverseMap().PreserveReferences();
 
             CreateMap<SkillDTO, ResumeSkills>()
-                .ForMember(dto => dto.SkillId, opt => opt.MapFrom(x => x.SkillId));
+                .ForMember(dto => dto.SkillId, opt => opt.MapFrom(x => x.SkillId)).PreserveReferences();
 
             CreateMap<LocationDTO, ResumeLocations>()
-                .ForMember(dto => dto.LocationId, opt => opt.MapFrom(x => x.LocationId));
+                .ForMember(dto => dto.LocationId, opt => opt.MapFrom(x => x.LocationId)).PreserveReferences();
 
             CreateMap<LanguageDTO, ResumeLanguages>()
-                .ForMember(dto => dto.LanguageId, opt => opt.MapFrom(x => x.LanguageId));
+                .ForMember(dto => dto.LanguageId, opt => opt.MapFrom(x => x.LanguageId)).PreserveReferences();
 
         }
     }
