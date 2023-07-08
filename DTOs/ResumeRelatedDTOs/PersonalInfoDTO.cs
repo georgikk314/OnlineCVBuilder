@@ -4,7 +4,6 @@ namespace Online_CV_Builder.DTOs.ResumeRelatedDTOs
 {
     public class PersonalInfoDTO
     {
-        public int ResumeId { get; set; }
 
         [Required(ErrorMessage = "Full Name is required.")]
         [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters.")]

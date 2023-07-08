@@ -4,7 +4,6 @@ namespace Online_CV_Builder.DTOs.ResumeRelatedDTOs
 {
     public class ResumeDTO
     {
-        public int ResumeId { get; set; }
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "Title is required.")]

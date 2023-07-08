@@ -4,8 +4,6 @@ namespace Online_CV_Builder.DTOs.ResumeRelatedDTOs
 {
     public class EducationDTO
     {
-        public int ResumeId { get; set; }
-
         [Required(ErrorMessage = "Institute Name is required.")]
         [StringLength(200, ErrorMessage = "Institute Name cannot exceed 200 characters.")]
         public string InstituteName { get; set; }

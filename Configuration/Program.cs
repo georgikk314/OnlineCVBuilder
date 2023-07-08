@@ -1,5 +1,8 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder.Data;
+using Online_CV_Builder.MappingProfiles;
+using Online_CV_Builder.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,17 @@ builder.Services.AddDbContext<ResumeBuilderContext>(options =>
         options.UseLazyLoadingProxies();
     }
 );
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+var mapperConfiguration = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile<ResumeMappingProfile>();
+});
+builder.Services.AddSingleton(mapperConfiguration.CreateMapper());
+
+
+builder.Services.AddScoped<IResumeService, ResumeService>();
 
 var app = builder.Build();
 
