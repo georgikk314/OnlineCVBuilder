@@ -6,6 +6,6 @@ namespace Online_CV_Builder.Services
     public interface IResumeService
     {
         Task<Resumes> CreateResumeAsync(ResumeDTO resumeDTO);
-       // Task<Resumes> GetResumeAsync(int resumeId);
+        Task<ResumeDTO> GetResumeAsync(int resumeId);
     }
 }

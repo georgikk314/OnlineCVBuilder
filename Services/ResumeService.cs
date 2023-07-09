@@ -23,17 +23,13 @@ namespace Online_CV_Builder.Services
 
         public async Task<Resumes> CreateResumeAsync(ResumeDTO resumeDto)
         {
+            // handling validations
             var validationContext = new ValidationContext(resumeDto, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
             bool isValid = Validator.TryValidateObject(resumeDto, validationContext, validationResults, validateAllProperties: true);
 
+            // map the values of resumeDto to Resumes
             var resume = _mapper.Map<Resumes>(resumeDto);
-            /*
-            var resume = new Resumes()
-            {
-                Title = resumeDto.Title
-            };*/
-
             resume.CreationDate = DateTime.Now;
             resume.LastModifiedDate = DateTime.Now;
 
@@ -43,15 +39,8 @@ namespace Online_CV_Builder.Services
             // Create and associate PersonalInfo
             if (resumeDto.PersonalInfo != null)
             {
+                // map the values of personalInfoDto to personalInfo
                 var personalInfo = _mapper.Map<PersonalInfo>(resumeDto.PersonalInfo);
-                /*
-                var personalInfo = new PersonalInfo()
-                {
-                    FullName = resumeDto.PersonalInfo.FullName,
-                    Address = resumeDto.PersonalInfo.Address,
-                    Email = resumeDto.PersonalInfo.Email,
-                    PhoneNumber = resumeDto.PersonalInfo.PhoneNumber
-                };*/
                 personalInfo.ResumeId = resume.Id;
                 _dbContext.PersonalInfos.Add(personalInfo);
             }
@@ -59,17 +48,11 @@ namespace Online_CV_Builder.Services
             // Create and associate Educations
             if (resumeDto.Educations != null)
             {
+                // handling multiple education input
                 foreach (var educationDto in resumeDto.Educations)
                 {
+                    // map the values of educationDto to education
                     var education = _mapper.Map<Education>(educationDto);
-                    /*
-                    var education = new Education()
-                    {
-                        InstituteName = educationDto.InstituteName,
-                        Degree = educationDto.Degree,
-                        FieldOfStudy = educationDto.FieldOfStudy
-                    };*/
-
                     education.ResumeId = resume.Id;
                     _dbContext.Education.Add(education);
                 }
@@ -78,16 +61,11 @@ namespace Online_CV_Builder.Services
             // Create and associate WorkExperiences
             if (resumeDto.WorkExperiences != null)
             {
+                // handling multiple experience input
                 foreach (var experienceDto in resumeDto.WorkExperiences)
                 {
+                    // map the values of experienceDto to workExperience
                     var workExperience = _mapper.Map<WorkExperience>(experienceDto);
-                    /*
-                    var workExperience = new WorkExperience()
-                    {
-                        Position = experienceDto.Position,
-                        CompanyName = experienceDto.CompanyName,
-                        Description = experienceDto.Description
-                    };*/
                     workExperience.ResumeId = resume.Id;
                     _dbContext.WorkExperiences.Add(workExperience);
                 }
@@ -96,19 +74,31 @@ namespace Online_CV_Builder.Services
             // Create and associate Languages
             if (resumeDto.Languages != null)
             {
+                // handling multiple language input
                 foreach (var languageDto in resumeDto.Languages)
                 {
+                    // map the values of languageDto to Languages
                     var language = _mapper.Map<Languages>(languageDto);
-                    /*
-                    var language = new Languages()
+
+                    // checking if language already exists
+                    bool languageExist = false;
+                    foreach (var item in _dbContext.Languages)
                     {
-                        LanguageName = languageDto.LanguageName,
-                        ProficiencyLevel = languageDto.ProficiencyLevel
-                    };*/
+                        if (item.LanguageName == languageDto.LanguageName && item.ProficiencyLevel == languageDto.ProficiencyLevel)
+                        {
+                            languageExist = true;  
+                            break;
+                        }
+                    }
 
-                    _dbContext.Languages.Add(language);
-                    await _dbContext.SaveChangesAsync();
-
+                    // adding new language
+                    if(!languageExist)
+                    {
+                        _dbContext.Languages.Add(language);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    
+                    // assigning the ID to language to be able to record it in the connection table
                     foreach (var item in _dbContext.Languages)
                     {
                         if (item.LanguageName == languageDto.LanguageName && item.ProficiencyLevel == languageDto.ProficiencyLevel)
@@ -118,15 +108,12 @@ namespace Online_CV_Builder.Services
                         }
                     }
 
-
+                    // assigning the IDs in the connection table
                     var resumeLanguage = new ResumeLanguages
                     {
                         ResumeId = resume.Id,
                         LanguageId = language.Id
                     };
-
-                    //var resumeLanguage = _mapper.Map<ResumeLanguages>(languageDto);
-                    //resumeLanguage.ResumeId = resume.Id;
 
                     _dbContext.ResumeLanguages.Add(resumeLanguage);
                 }
@@ -135,19 +122,31 @@ namespace Online_CV_Builder.Services
             // Create and associate Skills
             if (resumeDto.Skills != null)
             {
+                // handling multiple skill input
                 foreach (var skillDto in resumeDto.Skills)
                 {
+                    // map the values of skillDto to Skills
                     var skill = _mapper.Map<Skills>(skillDto);
-                    /*
-                    var skill = new Skills()
+                    
+                    // check if skill exist in the db
+                    bool skillExist = false;
+                    foreach (var item in _dbContext.Skills)
                     {
-                        SkillName = skillDto.SkillName
-                    };*/
+                        if (item.SkillName == skillDto.SkillName)
+                        {
+                            skillExist = true;
+                            break;
+                        }
+                    }
 
+                    // if the skill doesn't exist we add it to the db
+                    if (!skillExist)
+                    {
+                        _dbContext.Skills.Add(skill);
+                        await _dbContext.SaveChangesAsync();
+                    }
 
-                    _dbContext.Skills.Add(skill);
-                    await _dbContext.SaveChangesAsync();
-
+                    // assigning ID to skill to be able to set it in the connected table
                     foreach (var item in _dbContext.Skills)
                     {
                         if(item.SkillName == skillDto.SkillName)
@@ -157,14 +156,12 @@ namespace Online_CV_Builder.Services
                         }
                     }
 
+                    // assigning the IDs in the connected table
                     var resumeSkill = new ResumeSkills
                     {
                         ResumeId = resume.Id,
                         SkillId = skill.Id
                     };
-
-                    //var resumeSkill = _mapper.Map<ResumeSkills>(skillDto);
-                    //resumeSkill.ResumeId = resume.Id;
 
                     _dbContext.ResumeSkills.Add(resumeSkill);
                 }
@@ -173,20 +170,31 @@ namespace Online_CV_Builder.Services
             // Create and associate Locations
             if (resumeDto.Locations != null)
             {
+                // handling multiple location input
                 foreach (var locationDto in resumeDto.Locations)
                 {
+                    // map the values of locationDto to Locations
                     var location = _mapper.Map<Locations>(locationDto);
-                    /*
-                    var location = new Locations()
+
+                    // check if location exist in the db
+                    bool locationExist = false;
+                    foreach (var item in _dbContext.Locations)
                     {
-                        City = locationDto.City,
-                        State = locationDto.State,
-                        Country = locationDto.Country
-                    };*/
+                        if (item.City == locationDto.City && item.State == locationDto.State && item.Country == locationDto.Country)
+                        {
+                            locationExist = true;
+                            break;
+                        }
+                    }
 
-                    _dbContext.Locations.Add(location);
-                    await _dbContext.SaveChangesAsync();
+                    // if the location doesn't exist we add it to the db
+                    if (!locationExist)
+                    {
+                        _dbContext.Locations.Add(location);
+                        await _dbContext.SaveChangesAsync();
+                    }
 
+                    // assigning ID to location to be able to set it in the connected table
                     foreach (var item in _dbContext.Locations)
                     {
                         if(item.City == locationDto.City && item.State == locationDto.State && item.Country == locationDto.Country)
@@ -195,14 +203,12 @@ namespace Online_CV_Builder.Services
                         }
                     }
 
+                    // assigning the IDs in the connected table
                     var resumeLocation = new ResumeLocations
                     {
                         ResumeId = resume.Id,
                         LocationId = location.Id
                     }; 
-
-                    //var resumeLocation = _mapper.Map<ResumeLocations>(locationDto);
-                    //resumeLocation.ResumeId = resume.Id;
 
                     _dbContext.ResumeLocations.Add(resumeLocation);
                 }
@@ -211,17 +217,11 @@ namespace Online_CV_Builder.Services
             // Create and associate Certificates
             if (resumeDto.Certificates != null)
             {
+                // handling multiple certificate input
                 foreach (var certificateDto in resumeDto.Certificates)
                 {
+                    // map the values of certificateDto to Certificates
                     var certificate = _mapper.Map<Certificates>(certificateDto);
-                    /*
-                    var certificate = new Certificates()
-                    {
-                        CertificateName = certificateDto.CertificateName,
-                        IssueDate = certificateDto.IssueDate,
-                        IssuingOrganization = certificateDto.IssuingOrganization
-                    };*/
-
                     certificate.ResumeId = resume.Id;
                     _dbContext.Certificates.Add(certificate);
                 }
@@ -233,9 +233,74 @@ namespace Online_CV_Builder.Services
             return resume;
         }
 
-       // public async Task<Resumes> GetResumeAsync(int resumeId)
-       // {
-            
-       // }
+       public async Task<ResumeDTO> GetResumeAsync(int resumeId)
+       {
+            // Retrieve the resume from the database based on the resumeId
+            var resumeEntity = await _dbContext.Resumes.FindAsync(resumeId);
+            var resumeDto = new ResumeDTO()
+            {
+                //UserId = (int)resumeEntity.UserId,
+                CreationDate = (DateTime)resumeEntity.CreationDate,
+                LastModifiedDate = (DateTime)resumeEntity.LastModifiedDate
+            };
+
+            if (resumeEntity == null)
+            {
+                return null; // Resume not found
+            }
+
+            // Retrieve the related entities using separate queries
+            var personalInfo = await _dbContext.PersonalInfos.FirstOrDefaultAsync(pi => pi.ResumeId == resumeId);
+            var educations = await _dbContext.Education.Where(e => e.ResumeId == resumeId).ToListAsync();
+            var workExperiences = await _dbContext.WorkExperiences.Where(we => we.ResumeId == resumeId).ToListAsync();
+            var languages = await _dbContext.ResumeLanguages
+                .Include(rl => rl.Language)
+                .Where(rl => rl.ResumeId == resumeId)
+                .Select(rl => rl.Language)
+                .ToListAsync();
+            var skills = await _dbContext.ResumeSkills
+                .Include(rs => rs.Skill)
+                .Where(rs => rs.ResumeId == resumeId)
+                .Select(rs => rs.Skill)
+                .ToListAsync();
+            var locations = await _dbContext.ResumeLocations
+                .Include(rl => rl.Location)
+                .Where(rl => rl.ResumeId == resumeId)
+                .Select(rl => rl.Location)
+                .ToListAsync();
+            var certificates = await _dbContext.Certificates.Where(c => c.ResumeId == resumeId).ToListAsync();
+
+            PersonalInfoDTO personalInfoDto = new PersonalInfoDTO();
+            personalInfoDto = _mapper.Map<PersonalInfoDTO>(personalInfo);
+
+            List<EducationDTO> educationDTOs = new List<EducationDTO>();
+            educationDTOs = _mapper.Map<List<EducationDTO>>(educations);
+
+            List<WorkExperienceDTO> workExperienceDTOs = new List<WorkExperienceDTO>();
+            workExperienceDTOs = _mapper.Map<List<WorkExperienceDTO>>(workExperiences);
+
+            List<LanguageDTO> languageDTOs = new List<LanguageDTO>();
+            languageDTOs = _mapper.Map<List<LanguageDTO>>(languages);
+
+            List<SkillDTO> skillDTOs = new List<SkillDTO>();
+            skillDTOs = _mapper.Map<List<SkillDTO>>(skills);
+
+            List<LocationDTO> locationDTOs = new List<LocationDTO>();
+            locationDTOs = _mapper.Map<List<LocationDTO>>(locations);
+
+            List<CertificateDTO> certificateDTOs = new List<CertificateDTO>();
+            certificateDTOs = _mapper.Map<List<CertificateDTO>>(certificates);
+
+            // Assign the retrieved related entities to the resume object
+            resumeDto.PersonalInfo = personalInfoDto;
+            resumeDto.Educations = educationDTOs;
+            resumeDto.WorkExperiences = workExperienceDTOs;
+            resumeDto.Languages = languageDTOs;
+            resumeDto.Skills = skillDTOs;
+            resumeDto.Locations = locationDTOs;
+            resumeDto.Certificates = certificateDTOs;
+
+            return resumeDto;
+        }
     }
 }

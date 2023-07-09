@@ -4,7 +4,6 @@ namespace Online_CV_Builder.DTOs.ResumeRelatedDTOs
 {
     public class LocationDTO
     {
-        public int LocationId { get; set; }
         [Required(ErrorMessage = "City is required.")]
         [StringLength(100, ErrorMessage = "City cannot exceed 100 characters.")]
         public string City { get; set; }

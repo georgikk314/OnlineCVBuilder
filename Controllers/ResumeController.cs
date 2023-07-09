@@ -27,11 +27,17 @@ namespace Online_CV_Builder.Controllers
             return Ok(resume);
         }
 
-        /*
+        
         // GET api/resumes/{id}
         [HttpGet("{id}")]
-        
 
+        public async Task<IActionResult> GetResume(int id)
+        {
+            var resume = await _resumeService.GetResumeAsync(id);
+            return Ok(resume);
+        }
+
+        /*
         // PUT api/resumes/{id}
         [HttpPut("{id}")]
         
