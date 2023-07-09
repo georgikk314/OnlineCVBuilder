@@ -233,8 +233,8 @@ namespace Online_CV_Builder.Services
             return resume;
         }
 
-       public async Task<ResumeDTO> GetResumeAsync(int resumeId)
-       {
+        public async Task<ResumeDTO> GetResumeAsync(int resumeId)
+        {
             // Retrieve the resume from the database based on the resumeId
             var resumeEntity = await _dbContext.Resumes.FindAsync(resumeId);
             var resumeDto = new ResumeDTO()
@@ -302,5 +302,30 @@ namespace Online_CV_Builder.Services
 
             return resumeDto;
         }
+
+        public async Task<bool> DeleteResumeAsync(int resumeId)
+        {
+            var resume = await _dbContext.Resumes.FindAsync(resumeId);
+            if (resume == null)
+                return false;
+
+            // Remove related entities
+            _dbContext.PersonalInfos.RemoveRange(_dbContext.PersonalInfos.Where(pi => pi.ResumeId == resumeId));
+            _dbContext.Education.RemoveRange(_dbContext.Education.Where(ed => ed.ResumeId == resumeId));
+            _dbContext.WorkExperiences.RemoveRange(_dbContext.WorkExperiences.Where(we => we.ResumeId == resumeId));
+            _dbContext.Certificates.RemoveRange(_dbContext.Certificates.Where(c => c.ResumeId == resumeId));
+
+            // Remove connected entities
+            _dbContext.ResumeLanguages.RemoveRange(_dbContext.ResumeLanguages.Where(rl => rl.ResumeId == resumeId));
+            _dbContext.ResumeSkills.RemoveRange(_dbContext.ResumeSkills.Where(rs => rs.ResumeId == resumeId));
+            _dbContext.ResumeLocations.RemoveRange(_dbContext.ResumeLocations.Where(rl => rl.ResumeId == resumeId));
+
+            _dbContext.Resumes.Remove(resume);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        
     }
 }

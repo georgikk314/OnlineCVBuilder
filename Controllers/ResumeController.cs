@@ -40,10 +40,18 @@ namespace Online_CV_Builder.Controllers
         /*
         // PUT api/resumes/{id}
         [HttpPut("{id}")]
-        
+        */
 
         // DELETE api/resumes/{id}
         [HttpDelete("{id}")]
-        */
+        public async Task<IActionResult> DeleteResume(int id)
+        {
+            var isDeleted = await _resumeService.DeleteResumeAsync(id);
+
+            if (isDeleted)
+                return NoContent();
+
+            return NotFound();
+        }
     }
 }
