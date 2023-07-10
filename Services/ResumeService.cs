@@ -355,71 +355,342 @@ namespace Online_CV_Builder.Services
                 var workExperiences = await _dbContext.WorkExperiences
                         .Where(e => e.ResumeId == resumeId)
                         .ToListAsync();
-                if(workExperiences != null)
+                var newWorkExperiences = resumeDto.WorkExperiences.ToList();
+                int numberOfOldWorkExperiences = workExperiences.Count;
+                int numberOfNewWorkExperiences = newWorkExperiences.Count;
+
+                
+                for (int i = 0; i < numberOfOldWorkExperiences; i++)
                 {
-                    workExperiences = _mapper.Map<List<WorkExperience>>(resumeDto.WorkExperiences);
+                    //old records are more than the new records
+                    if(i > numberOfNewWorkExperiences - 1)
+                    {
+                        _dbContext.WorkExperiences.Remove(workExperiences[i]);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var newWorkExperienceEntity = _mapper.Map<WorkExperience>(newWorkExperiences[i]);
+                        workExperiences[i] = newWorkExperienceEntity;
+                    }
+                }
+
+                // new records are more than the old records
+                if(numberOfOldWorkExperiences < numberOfNewWorkExperiences)
+                {
+                    for (int i = numberOfOldWorkExperiences; i < numberOfNewWorkExperiences; i++)
+                    {
+                        var newWorkExperienceEntity = _mapper.Map<WorkExperience>(newWorkExperiences[i]);
+                        _dbContext.WorkExperiences.Add(newWorkExperienceEntity);
+                    }
+                    await _dbContext.SaveChangesAsync();
                 }
                 
             }
 
             if(resumeDto.Educations != null)
             {
-                var educations = await _dbContext.Education.Where(e => e.ResumeId == resumeId).ToListAsync();
-                if(educations != null)
+                var educations = await _dbContext.Education
+                        .Where(e => e.ResumeId == resumeId)
+                        .ToListAsync();
+                var newEducations = resumeDto.Educations.ToList();
+                int numberOfOldEducations = educations.Count;
+                int numberOfNewEducations = newEducations.Count;
+
+
+                for (int i = 0; i < numberOfOldEducations; i++)
                 {
-                    educations = _mapper.Map<List<Education>>(resumeDto.Educations);
+                    //old records are more than the new records
+                    if (i > numberOfNewEducations - 1)
+                    {
+                        _dbContext.Education.Remove(educations[i]);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var newEducationEntity = _mapper.Map<Education>(newEducations[i]);
+                        educations[i] = newEducationEntity;
+                    }
+                }
+
+                // new records are more than the old records
+                if (numberOfOldEducations < numberOfNewEducations)
+                {
+                    for (int i = numberOfOldEducations; i < numberOfNewEducations; i++)
+                    {
+                        var newEducationEntity = _mapper.Map<Education>(newEducations[i]);
+                        _dbContext.Education.Add(newEducationEntity);
+                    }
+                    await _dbContext.SaveChangesAsync();
                 }
             }
 
             if(resumeDto.Certificates != null)
             {
-                var certificates = await _dbContext.Certificates.Where(c => c.ResumeId == resumeId).ToListAsync();
-                if(certificates != null)
+                var certificates = await _dbContext.Certificates
+                        .Where(c => c.ResumeId == resumeId)
+                        .ToListAsync();
+                var newCertificates = resumeDto.Certificates.ToList();
+                int numberOfOldCertificates = certificates.Count;
+                int numberOfNewCertificates = certificates.Count;
+
+
+                for (int i = 0; i < numberOfOldCertificates; i++)
                 {
-                    certificates = _mapper.Map<List<Certificates>>(resumeDto.Certificates);
+                    //old records are more than the new records
+                    if (i > numberOfNewCertificates - 1)
+                    {
+                        _dbContext.Certificates.Remove(certificates[i]);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var newCertificateEntity = _mapper.Map<Certificates>(certificates[i]);
+                        certificates[i] = newCertificateEntity;
+                    }
+                }
+
+                // new records are more than the old records
+                if (numberOfOldCertificates < numberOfNewCertificates)
+                {
+                    for (int i = numberOfOldCertificates; i < numberOfNewCertificates; i++)
+                    {
+                        var newCertificateEntity = _mapper.Map<Certificates>(certificates[i]);
+                        _dbContext.Certificates.Add(newCertificateEntity);
+                    }
+                    await _dbContext.SaveChangesAsync();
                 }
             }
 
             if(resumeDto.Languages != null)
             {
+                var updatedLanguages = resumeDto.Languages.ToList();
                 var languageIds = await _dbContext.ResumeLanguages
                  .Where(rl => rl.ResumeId == resumeId)
                  .Select(rl => rl.LanguageId)
                  .ToListAsync();
-                if(languageIds != null)
+                int numberOfUpdatedLanguages = updatedLanguages.Count;
+                int numberOfOldLanguages = languageIds.Count;
+               
+                int numberOfLanguage = 0;
+                foreach(var newLanguage in updatedLanguages)
                 {
-                    foreach (var languageId in languageIds)
-                    {
+                    int? oldLanguageId = null;
+                    var oldLanguages = _dbContext.Languages;
 
-                        var currentLanguage = _dbContext.Languages.FirstAsync(l => l.Id == languageId);
+                    // checking if there is currently such a language in the db
+                    foreach (var oldLanguage in oldLanguages)
+                    {
+                        if(oldLanguage.LanguageName == newLanguage.LanguageName &&  oldLanguage.ProficiencyLevel == newLanguage.ProficiencyLevel)
+                        {
+                            oldLanguageId = oldLanguage.Id;
+                            languageIds[numberOfLanguage] = oldLanguageId;
+                            break;
+                        }
                     }
+
+                    // if there isn't such a language in the db
+                    if(oldLanguageId == null)
+                    {
+                            var newLanguageEntity = _mapper.Map<Languages>(newLanguage);
+                            _dbContext.Languages.Add(newLanguageEntity);
+                            await _dbContext.SaveChangesAsync();
+                            int? newLanguageId = null;
+                            foreach (var item in _dbContext.Languages)
+                            {
+                                if (item.LanguageName == newLanguage.LanguageName && item.ProficiencyLevel == newLanguage.ProficiencyLevel)
+                                {
+                                    newLanguageId = item.Id;
+                                    break;
+                                }
+                            }
+
+                            // if we have more languages than the old ones
+                            if(numberOfLanguage > numberOfOldLanguages - 1)
+                            {
+                                var resumeLanguage = new ResumeLanguages()
+                                {
+                                    ResumeId = resumeId,
+                                    LanguageId = newLanguageId
+                                };
+                                _dbContext.ResumeLanguages.Add(resumeLanguage);
+                                await _dbContext.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                // we update the value of the oldLanguageId
+                                languageIds[numberOfLanguage] = newLanguageId;
+                            }
+
+                    }
+                    numberOfLanguage++;
+       
                 }
 
+                //if we remove several languages in the process of updating
+                if(numberOfUpdatedLanguages < numberOfOldLanguages)
+                {
+                    for(int i = numberOfUpdatedLanguages; i < numberOfOldLanguages; i++)
+                    {
+                        var removedLanguage = _dbContext.ResumeLanguages.Where(rl => rl.ResumeId == resumeId && rl.LanguageId == languageIds[i]).FirstOrDefault();
+                        _dbContext.ResumeLanguages.Remove(removedLanguage);
+                    }
+                    await _dbContext.SaveChangesAsync();
+                }
+                
             }
 
             if(resumeDto.Skills != null)
             {
-                var skills = await _dbContext.ResumeSkills
-                .Include(rs => rs.Skill)
-                .Where(rs => rs.ResumeId == resumeId)
-                .Select(rs => rs.Skill)
-                .ToListAsync();
-                if(skills != null)
+                var updatedSkills = resumeDto.Skills.ToList();
+                var skillIds = await _dbContext.ResumeSkills
+                 .Where(rl => rl.ResumeId == resumeId)
+                 .Select(rl => rl.SkillId)
+                 .ToListAsync();
+                int numberOfUpdatedSkills = updatedSkills.Count;
+                int numberOfOldSkills = skillIds.Count;
+
+                int numberOfSkill = 0;
+                foreach (var newSkill in updatedSkills)
                 {
-                    skills = _mapper.Map<List<Skills>>(resumeDto.Skills);
+                    int? oldSkillId = null;
+                    var oldSkills = _dbContext.Skills;
+
+                    // checking if there is currently such a skill in the db
+                    foreach (var oldSkill in oldSkills)
+                    {
+                        if (oldSkill.SkillName == newSkill.SkillName)
+                        {
+                            oldSkillId = oldSkill.Id;
+                            skillIds[numberOfSkill] = oldSkillId;
+                            break;
+                        }
+                    }
+
+                    // if there isn't such a skill in the db
+                    if (oldSkillId == null)
+                    {
+                        var newSkillEntity = _mapper.Map<Skills>(newSkill);
+                        _dbContext.Skills.Add(newSkillEntity);
+                        await _dbContext.SaveChangesAsync();
+                        int? newSkillId = null;
+                        foreach (var item in _dbContext.Skills)
+                        {
+                            if (item.SkillName == newSkill.SkillName)
+                            {
+                                newSkillId = item.Id;
+                                break;
+                            }
+                        }
+
+                        // if we have more skills than the old ones
+                        if (numberOfSkill > numberOfOldSkills - 1)
+                        {
+                            var resumeSkill = new ResumeSkills()
+                            {
+                                ResumeId = resumeId,
+                                SkillId = newSkillId
+                            };
+                            _dbContext.ResumeSkills.Add(resumeSkill);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            // we update the value of the oldSkillId
+                            skillIds[numberOfSkill] = newSkillId;
+                        }
+
+                    }
+                    numberOfSkill++;
+
+                }
+
+                //if we remove several skills in the process of updating
+                if (numberOfUpdatedSkills < numberOfOldSkills)
+                {
+                    for (int i = numberOfUpdatedSkills; i < numberOfOldSkills; i++)
+                    {
+                        var removedSkill = _dbContext.ResumeSkills.Where(rl => rl.ResumeId == resumeId && rl.SkillId == skillIds[i]).FirstOrDefault();
+                        _dbContext.ResumeSkills.Remove(removedSkill);
+                    }
+                    await _dbContext.SaveChangesAsync();
                 }
             }
 
             if (resumeDto.Locations != null)
             {
-                var locations = await _dbContext.ResumeLocations
-                .Include(rl => rl.Location)
-                .Where(rl => rl.ResumeId == resumeId)
-                .Select(rl => rl.Location)
-                .ToListAsync();
-                if(locations != null)
+                var updatedLocations = resumeDto.Locations.ToList();
+                var locationIds = await _dbContext.ResumeLocations
+                 .Where(rl => rl.ResumeId == resumeId)
+                 .Select(rl => rl.LocationId)
+                 .ToListAsync();
+                int numberOfUpdatedLocations = updatedLocations.Count;
+                int numberOfOldLocations = locationIds.Count;
+
+                int numberOfLocation = 0;
+                foreach (var newLocation in updatedLocations)
                 {
-                    locations = _mapper.Map<List<Locations>>(resumeDto.Locations);
+                    int? oldLocationId = null;
+                    var oldLocations = _dbContext.Locations;
+
+                    // checking if there is currently such a location in the db
+                    foreach (var oldLocation in oldLocations)
+                    {
+                        if (oldLocation.City == newLocation.City && oldLocation.State == newLocation.State && oldLocation.Country == newLocation.Country)
+                        {
+                            oldLocationId = oldLocation.Id;
+                            locationIds[numberOfLocation] = oldLocationId;
+                            break;
+                        }
+                    }
+
+                    // if there isn't such a skill in the db
+                    if (oldLocationId == null)
+                    {
+                        var newLocationEntity = _mapper.Map<Locations>(newLocation);
+                        _dbContext.Locations.Add(newLocationEntity);
+                        await _dbContext.SaveChangesAsync();
+                        int? newLocationId = null;
+                        foreach (var item in _dbContext.Locations)
+                        {
+                            if (item.City == newLocation.City && item.State == newLocation.State && item.Country == newLocation.Country)
+                            {
+                                newLocationId = item.Id;
+                                break;
+                            }
+                        }
+
+                        // if we have more skills than the old ones
+                        if (numberOfLocation > numberOfOldLocations - 1)
+                        {
+                            var resumeLocation = new ResumeLocations()
+                            {
+                                ResumeId = resumeId,
+                                LocationId = newLocationId
+                            };
+                            _dbContext.ResumeLocations.Add(resumeLocation);
+                            await _dbContext.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            // we update the value of the oldSkillId
+                            locationIds[numberOfLocation] = newLocationId;
+                        }
+
+                    }
+                    numberOfLocation++;
+
+                }
+
+                //if we remove several skills in the process of updating
+                if (numberOfUpdatedLocations < numberOfOldLocations)
+                {
+                    for (int i = numberOfUpdatedLocations; i < numberOfOldLocations; i++)
+                    {
+                        var removedLocation = _dbContext.ResumeLocations.Where(rl => rl.ResumeId == resumeId && rl.LocationId == locationIds[i]).FirstOrDefault();
+                        _dbContext.ResumeLocations.Remove(removedLocation);
+                    }
+                    await _dbContext.SaveChangesAsync();
                 }
             }
             
