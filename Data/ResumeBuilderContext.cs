@@ -7,68 +7,67 @@ namespace Online_CV_Builder.Data
     public class ResumeBuilderContext : DbContext
     {
         public ResumeBuilderContext(DbContextOptions<ResumeBuilderContext> options) : base(options)
-        {
-            
+        {   
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ResumeSkills>()
                 .HasKey(e => new { e.ResumeId, e.SkillId });
-
             modelBuilder.Entity<ResumeSkills>()
-            .HasOne(rs => rs.Resume)
-            .WithMany(r => r.ResumeSkills)
-            .HasForeignKey(rs => rs.ResumeId);
-
+                .HasOne(rs => rs.Resume)
+                .WithMany(r => r.ResumeSkills)
+                .HasForeignKey(rs => rs.ResumeId);
             modelBuilder.Entity<ResumeSkills>()
                 .HasOne(rs => rs.Skill)
                 .WithMany(s => s.ResumeSkills)
                 .HasForeignKey(rs => rs.SkillId);
 
-
             modelBuilder.Entity<ResumeLanguages>()
                 .HasKey(e => new { e.ResumeId, e.LanguageId });
-
             modelBuilder.Entity<ResumeLanguages>()
                 .HasOne(rl => rl.Resume)
                 .WithMany(r => r.ResumeLanguages)
                 .HasForeignKey(rl => rl.ResumeId);
-
             modelBuilder.Entity<ResumeLanguages>()
                 .HasOne(rl => rl.Language)
                 .WithMany(r => r.ResumeLanguages)
                 .HasForeignKey(rl => rl.LanguageId);
 
-
             modelBuilder.Entity<ResumeLocations>()
                 .HasKey(e => new { e.ResumeId, e.LocationId });
-
             modelBuilder.Entity<ResumeLocations>()
                 .HasOne(rl => rl.Location)
                 .WithMany(r => r.ResumeLocations)
                 .HasForeignKey(rl => rl.LocationId);
-
             modelBuilder.Entity<ResumeLocations>()
                 .HasOne(rl => rl.Resume)
                 .WithMany(r => r.ResumeLocations)
                 .HasForeignKey(rl => rl.ResumeId);
 
-
             modelBuilder.Entity<ResumeTemplates>()
                 .HasKey(e => new { e.ResumeId, e.TemplateId });
-
             modelBuilder.Entity<ResumeTemplates>()
                 .HasOne(rt => rt.Template)
                 .WithMany(r => r.ResumeTemplates)
                 .HasForeignKey(rt => rt.TemplateId);
-
             modelBuilder.Entity<ResumeTemplates>()
                 .HasOne(rt => rt.Resume)
                 .WithMany(r => r.ResumeTemplates)
                 .HasForeignKey(rt => rt.ResumeId);
+            modelBuilder.Entity<Templates>().HasData
+               (new Templates
+                   {
+                       Id = 1,
+                       TemplateName = "CoolTemplate",
+                       TemplateFilePath = @"C:\Online CV Builder\Online CV Builder"
+                   },
+                   new Templates
+                   {
+                       Id = 2,
+                       TemplateName = "VeryCoolTemplate",
+                       TemplateFilePath = @"C:\Online CV Builder\Online CV Builder"
+                   });
         }
-
         public DbSet<Users> Users { get; set; }
         public DbSet<Resumes> Resumes { get; set; }
         public DbSet<PersonalInfo> PersonalInfos { get; set; }
