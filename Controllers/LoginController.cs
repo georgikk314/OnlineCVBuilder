@@ -1,50 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Online_CV_Builder.Data;
-using Microsoft.EntityFrameworkCore;
-using Online_CV_Builder.Models;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Online_CV_Builder.Controllers
 {
-    [Route("api/login")]
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly ResumeBuilderContext _ResumeBuilderContext;
-        public LoginController(ResumeBuilderContext ResumeBuilderContext)
+        // GET: api/<LoginController>
+        [HttpGet]
+        public IEnumerable<string> Get()
         {
-            _ResumeBuilderContext = ResumeBuilderContext;
+            return new string[] { "value1", "value2" };
         }
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO user1)
+
+        // GET api/<LoginController>/5
+        [HttpGet("{id}")]
+        public string Get(int id)
         {
-            var user2 = await _ResumeBuilderContext.Users.FirstOrDefaultAsync(u => u.Email == user1.Email);
-            if (user2 == null)
-            {
-                return BadRequest("User not found");
-            }
-            if (user2.VerifiedAt == null)
-            {
-                return BadRequest("User not verified");
-            }
-            if (!VerifyPasswordHash(user1.Password, user2.PasswordHash, user2.PasswordSalt))
-            {
-                return BadRequest("Password is incorect");
-            }
-            return Ok($"Welcome back, {user2.Email} !  :-) ");
+            return "value";
         }
-        private bool VerifyPasswordHash(string password, byte[] passwordhash, byte[] passwordsalt) 
+
+        // POST api/<LoginController>
+        [HttpPost]
+        public void Post([FromBody] string value)
         {
-            using (var hmac = new HMACSHA512(passwordsalt))
-            {
-                var computedhash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedhash.SequenceEqual(passwordhash);
-            }
+        }
+
+        // PUT api/<LoginController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/<LoginController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
         }
     }
 }
-
