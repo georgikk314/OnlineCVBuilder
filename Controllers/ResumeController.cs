@@ -37,10 +37,19 @@ namespace Online_CV_Builder.Controllers
             return Ok(resume);
         }
 
-        /*
+        
         // PUT api/resumes/{id}
         [HttpPut("{id}")]
-        */
+        public async Task<IActionResult> UpdateResume(int id, [FromBody] ResumeDTO resumeDto)
+        {
+            var updatedResume = await _resumeService.UpdateResumeAsync(id, resumeDto);
+            if (updatedResume == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updatedResume);
+        }
 
         // DELETE api/resumes/{id}
         [HttpDelete("{id}")]

@@ -326,6 +326,106 @@ namespace Online_CV_Builder.Services
             return true;
         }
 
-        
+        public async Task<Resumes> UpdateResumeAsync(int resumeId, ResumeDTO resumeDto)
+        {
+            var resume = await _dbContext.Resumes.FindAsync(resumeId);
+            if (resume == null)
+            {
+                return null;
+            }
+
+            // Update the properties of the resume entity
+            resume.Title = resumeDto.Title;
+            resume.LastModifiedDate = DateTime.Now;
+
+            // Update the related entities
+            if (resumeDto.PersonalInfo != null)
+            {
+                var personalInfo = await _dbContext.PersonalInfos.FindAsync(resumeId);
+                if (personalInfo != null)
+                {
+                    // map the values of personalInfoDto to personalInfo
+                    personalInfo = _mapper.Map<PersonalInfo>(resumeDto.PersonalInfo);
+
+                }
+            }
+
+            if(resumeDto.WorkExperiences != null)
+            {
+                var workExperiences = await _dbContext.WorkExperiences
+                        .Where(e => e.ResumeId == resumeId)
+                        .ToListAsync();
+                if(workExperiences != null)
+                {
+                    workExperiences = _mapper.Map<List<WorkExperience>>(resumeDto.WorkExperiences);
+                }
+                
+            }
+
+            if(resumeDto.Educations != null)
+            {
+                var educations = await _dbContext.Education.Where(e => e.ResumeId == resumeId).ToListAsync();
+                if(educations != null)
+                {
+                    educations = _mapper.Map<List<Education>>(resumeDto.Educations);
+                }
+            }
+
+            if(resumeDto.Certificates != null)
+            {
+                var certificates = await _dbContext.Certificates.Where(c => c.ResumeId == resumeId).ToListAsync();
+                if(certificates != null)
+                {
+                    certificates = _mapper.Map<List<Certificates>>(resumeDto.Certificates);
+                }
+            }
+
+            if(resumeDto.Languages != null)
+            {
+                var languageIds = await _dbContext.ResumeLanguages
+                 .Where(rl => rl.ResumeId == resumeId)
+                 .Select(rl => rl.LanguageId)
+                 .ToListAsync();
+                if(languageIds != null)
+                {
+                    foreach (var languageId in languageIds)
+                    {
+
+                        var currentLanguage = _dbContext.Languages.FirstAsync(l => l.Id == languageId);
+                    }
+                }
+
+            }
+
+            if(resumeDto.Skills != null)
+            {
+                var skills = await _dbContext.ResumeSkills
+                .Include(rs => rs.Skill)
+                .Where(rs => rs.ResumeId == resumeId)
+                .Select(rs => rs.Skill)
+                .ToListAsync();
+                if(skills != null)
+                {
+                    skills = _mapper.Map<List<Skills>>(resumeDto.Skills);
+                }
+            }
+
+            if (resumeDto.Locations != null)
+            {
+                var locations = await _dbContext.ResumeLocations
+                .Include(rl => rl.Location)
+                .Where(rl => rl.ResumeId == resumeId)
+                .Select(rl => rl.Location)
+                .ToListAsync();
+                if(locations != null)
+                {
+                    locations = _mapper.Map<List<Locations>>(resumeDto.Locations);
+                }
+            }
+            
+            await _dbContext.SaveChangesAsync();
+
+            return resume;
+        }
     }
 }

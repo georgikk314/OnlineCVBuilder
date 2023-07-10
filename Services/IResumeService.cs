@@ -8,5 +8,6 @@ namespace Online_CV_Builder.Services
         Task<Resumes> CreateResumeAsync(ResumeDTO resumeDTO);
         Task<ResumeDTO> GetResumeAsync(int resumeId);
         Task<bool> DeleteResumeAsync(int resumeId);
+        Task<Resumes> UpdateResumeAsync(int resumeId, ResumeDTO resumeDTO);
     }
 }
