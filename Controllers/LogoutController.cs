@@ -6,20 +6,13 @@ namespace Online_CV_Builder.Controllers
     [ApiController]
     public class LogoutController : ControllerBase
     {
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet]
+        public IActionResult Logout()
         {
+            // Perform logout operations here (e.g., clear session, invalidate tokens)
 
-        }
-        [Route("api/resumedelete/{id}")]
-        [ApiController]
-        public class ResumeDeleteController : ControllerBase
-        {
-            [HttpDelete("{id}")]
-            public void DeleteResume(int id)
-            {
-
-            }
+            // Redirect user to home page
+            return RedirectToAction("LoggedOut", "Home");
         }
     }
 }
