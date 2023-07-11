@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder.Data;
+using Online_CV_Builder.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<ResumeBuilderContext>(options =>
         options.UseLazyLoadingProxies();
     }
 );
+
+builder.Services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 
 var app = builder.Build();
 

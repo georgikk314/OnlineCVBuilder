@@ -1,17 +1,9 @@
-﻿using Abp.Dependency;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Online_CV_Builder.Data.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 using Online_CV_Builder.Data;
-using Online_CV_Builder.Configuration;
-using System.Text.Json.Nodes;
-using Online_CV_Builder.Models;
-using System.Security.Cryptography;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Routing;
+using Online_CV_Builder.Data.Entities;
 using Online_CV_Builder.DTOs;
+using Online_CV_Builder.Services;
+using System.Security.Cryptography;
 
 namespace Online_CV_Builder.Controllers
 {
@@ -19,50 +11,30 @@ namespace Online_CV_Builder.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-        private readonly ResumeBuilderContext _ResumeBuilderContext;
-        public RegisterController(ResumeBuilderContext ResumeBuilderContext)
+        private readonly IUserAuthenticationService _userAuthService;
+        public RegisterController(IUserAuthenticationService userAuthService)
         {
-            _ResumeBuilderContext = ResumeBuilderContext;
+            _userAuthService = userAuthService;
         }
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO user)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDto)
         {
             try
             {
-                if (_ResumeBuilderContext.Users.Any(u => u.Email == user.Email))
-                {
-                    return BadRequest("A user with this email already exists");
-                }
-                CreatePasswordHash(user.Password, out byte[] PasswordHash, out byte[] PasswordSalt);
-                // RegisterDTO NewUser = new RegisterDTO();
-                Users newUser = new Users();
-                newUser.Email = user.Email;
-                newUser.Username = user.Username;
-                newUser.Password = user.Password;
-                newUser.PasswordHash = PasswordHash;
-                newUser.PasswordSalt = PasswordSalt;
-                newUser.VerificationToken = CreateRandomToken();
-                _ResumeBuilderContext.Users.Add(newUser);
-                await _ResumeBuilderContext.SaveChangesAsync();
-                return Ok("Registration successful");
+                var user = await _userAuthService.RegisterAsync(registerDto);
+                return Ok(user);
             }
-            catch (Exception ex) 
+            catch (ArgumentException ex)
             {
-                return StatusCode(500, ex.Message);
-                throw;
+                return BadRequest(ex.Message);
             }
-        }
-        private void CreatePasswordHash(string password, out byte[] PasswordHash, out byte[] PasswordSalt)
-        {
-            using (var hmac = new HMACSHA512())
+            catch (Exception ex)
             {
-                PasswordSalt = hmac.Key;
-                PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                // Log the error and return an appropriate response
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while registering the user.");
             }
         }
-        private string CreateRandomToken()
-        {
-            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-        }
+
+
     }
 }

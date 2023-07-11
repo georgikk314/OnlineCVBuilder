@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Online_CV_Builder.Data;
 using Microsoft.EntityFrameworkCore;
-using Online_CV_Builder.Models;
+using Online_CV_Builder.Data;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +16,8 @@ namespace Online_CV_Builder.Controllers
         {
             _ResumeBuilderContext = ResumeBuilderContext;
         }
+
+        /*
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDTO user1)
         {
@@ -44,5 +44,6 @@ namespace Online_CV_Builder.Controllers
                 return computedhash.SequenceEqual(passwordhash);
             }
         }
+        */
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
 
-namespace Online_CV_Builder.Models
+namespace Online_CV_Builder.DTOs
 {
     public class RegisterDTO
     {
-        public string Endpoint = "/register";
-        public int Id { get; set; }
         [Required, NotNull]
         [StringLength(100)]
         public string Username { get; set; } = string.Empty;

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder.Data.Entities;
 
 namespace Online_CV_Builder.Data
@@ -8,7 +7,7 @@ namespace Online_CV_Builder.Data
     {
         public ResumeBuilderContext(DbContextOptions<ResumeBuilderContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
