@@ -1,49 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder.Data;
+using Online_CV_Builder.DTOs;
+using Online_CV_Builder.Services;
 using System.Security.Cryptography;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Online_CV_Builder.Controllers
 {
-    [Route("api/login")]
+    [Route("api/")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly ResumeBuilderContext _ResumeBuilderContext;
-        public LoginController(ResumeBuilderContext ResumeBuilderContext)
+        private readonly IUserAuthenticationService _userAuthService;
+        public LoginController(IUserAuthenticationService userAuthService)
         {
-            _ResumeBuilderContext = ResumeBuilderContext;
+            _userAuthService = userAuthService;
         }
 
-        /*
-        [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginDTO user1)
+        
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserDTO userDto)
         {
-            var user2 = await _ResumeBuilderContext.Users.FirstOrDefaultAsync(u => u.Email == user1.Email);
-            if (user2 == null)
-            {
-                return BadRequest("User not found");
-            }
-            if (user2.VerifiedAt == null)
-            {
-                return BadRequest("User not verified");
-            }
-            if (!VerifyPasswordHash(user1.Password, user2.PasswordHash, user2.PasswordSalt))
-            {
-                return BadRequest("Password is incorect");
-            }
-            return Ok($"Welcome back, {user2.Email} !  :-) ");
+            var user = await _userAuthService.AuthenticateAsync(userDto);
+
+            if (user == null)
+                return Unauthorized();
+
+            return Ok(user);
         }
-        private bool VerifyPasswordHash(string password, byte[] passwordhash, byte[] passwordsalt)
-        {
-            using (var hmac = new HMACSHA512(passwordsalt))
-            {
-                var computedhash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedhash.SequenceEqual(passwordhash);
-            }
-        }
-        */
+        
     }
 }

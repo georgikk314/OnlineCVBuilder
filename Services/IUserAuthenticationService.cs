@@ -6,5 +6,6 @@ namespace Online_CV_Builder.Services
     public interface IUserAuthenticationService
     {
         public Task<Users> RegisterAsync(RegisterDTO registerDto);
+        public Task<Users> AuthenticateAsync(UserDTO userDto);
     }
 }

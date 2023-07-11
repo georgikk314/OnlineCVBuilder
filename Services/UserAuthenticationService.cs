@@ -3,6 +3,7 @@ using Online_CV_Builder.Data;
 using Online_CV_Builder.Data.Entities;
 using Online_CV_Builder.DTOs;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Online_CV_Builder.Services
 {
@@ -58,6 +59,47 @@ namespace Online_CV_Builder.Services
             return user;
         }
 
+        public async Task<Users> AuthenticateAsync(UserDTO userDto)
+        {
+            var user = await _dbContext.Set<Users>().FirstOrDefaultAsync(u => u.Username == userDto.Username);
+
+            if (user == null)
+                return null;
+
+            if (!VerifyPasswordHash(userDto.Password, user.PasswordHash, user.PasswordSalt))
+                return null;
+
+            return user;
+        }
+      
+        /*
+        public async Task<Users> LoginAsync(UserDTO userDto)
+        {
+            var user = await AuthenticateAsync(userDto.Username, userDto.Password);
+
+            if (user == null)
+                throw new Exception("Invalid username or password.");
+
+            return user;
+        }*/
+    
+
+        private bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        {
+            using (var hmac = new HMACSHA512(storedSalt))
+            {
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != storedHash[i])
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
         private void CreatePasswordHash(string password, out byte[] PasswordHash, out byte[] PasswordSalt)
         {
             using (var hmac = new HMACSHA512())
@@ -68,3 +110,4 @@ namespace Online_CV_Builder.Services
         }
     }
 }
+
