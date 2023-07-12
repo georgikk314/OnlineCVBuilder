@@ -329,6 +329,7 @@ namespace Online_CV_Builder.Services
         public async Task<Resumes> UpdateResumeAsync(int resumeId, ResumeDTO resumeDto)
         {
             var resume = await _dbContext.Resumes.FindAsync(resumeId);
+            _dbContext.Resumes.Attach(resume);
             if (resume == null)
             {
                 return null;
@@ -337,16 +338,24 @@ namespace Online_CV_Builder.Services
             // Update the properties of the resume entity
             resume.Title = resumeDto.Title;
             resume.LastModifiedDate = DateTime.Now;
+            await _dbContext.SaveChangesAsync();
 
             // Update the related entities
             if (resumeDto.PersonalInfo != null)
             {
-                var personalInfo = await _dbContext.PersonalInfos.FindAsync(resumeId);
+                var personalInfo = await _dbContext.PersonalInfos.FirstOrDefaultAsync(p => p.ResumeId == resumeId);
+                _dbContext.PersonalInfos.Attach(personalInfo);
                 if (personalInfo != null)
                 {
                     // map the values of personalInfoDto to personalInfo
-                    personalInfo = _mapper.Map<PersonalInfo>(resumeDto.PersonalInfo);
 
+                    //personalInfo = _mapper.Map<PersonalInfo>(resumeDto.PersonalInfo);
+                    var oldPersonalInfo = resumeDto.PersonalInfo;
+                    personalInfo.FullName = oldPersonalInfo.FullName;
+                    personalInfo.Address = oldPersonalInfo.Address;
+                    personalInfo.PhoneNumber = oldPersonalInfo.PhoneNumber;
+                    personalInfo.Email = oldPersonalInfo.Email;
+                    await _dbContext.SaveChangesAsync();
                 }
             }
 
@@ -355,6 +364,7 @@ namespace Online_CV_Builder.Services
                 var workExperiences = await _dbContext.WorkExperiences
                         .Where(e => e.ResumeId == resumeId)
                         .ToListAsync();
+                _dbContext.WorkExperiences.AttachRange(workExperiences);
                 var newWorkExperiences = resumeDto.WorkExperiences.ToList();
                 int numberOfOldWorkExperiences = workExperiences.Count;
                 int numberOfNewWorkExperiences = newWorkExperiences.Count;
@@ -370,8 +380,15 @@ namespace Online_CV_Builder.Services
                     }
                     else
                     {
-                        var newWorkExperienceEntity = _mapper.Map<WorkExperience>(newWorkExperiences[i]);
-                        workExperiences[i] = newWorkExperienceEntity;
+                        
+                        workExperiences[i].Description = newWorkExperiences[i].Description;
+                        workExperiences[i].Position = newWorkExperiences[i].Position;
+                        workExperiences[i].CompanyName = newWorkExperiences[i].CompanyName;
+                        workExperiences[i].StartDate = newWorkExperiences[i].StartDate;
+                        workExperiences[i].EndDate = newWorkExperiences[i].EndDate;
+
+                        
+                        await _dbContext.SaveChangesAsync();
                     }
                 }
 
@@ -393,6 +410,7 @@ namespace Online_CV_Builder.Services
                 var educations = await _dbContext.Education
                         .Where(e => e.ResumeId == resumeId)
                         .ToListAsync();
+                _dbContext.Education.AttachRange(educations);
                 var newEducations = resumeDto.Educations.ToList();
                 int numberOfOldEducations = educations.Count;
                 int numberOfNewEducations = newEducations.Count;
@@ -408,8 +426,12 @@ namespace Online_CV_Builder.Services
                     }
                     else
                     {
-                        var newEducationEntity = _mapper.Map<Education>(newEducations[i]);
-                        educations[i] = newEducationEntity;
+                        educations[i].InstituteName = newEducations[i].FieldOfStudy;
+                        educations[i].Degree = newEducations[i].Degree;
+                        educations[i].FieldOfStudy = newEducations[i].FieldOfStudy;
+                        educations[i].StartDate = newEducations[i].StartDate;
+                        educations[i].EndDate = newEducations[i].EndDate;
+                        await _dbContext.SaveChangesAsync();
                     }
                 }
 
@@ -430,6 +452,7 @@ namespace Online_CV_Builder.Services
                 var certificates = await _dbContext.Certificates
                         .Where(c => c.ResumeId == resumeId)
                         .ToListAsync();
+                _dbContext.Certificates.AttachRange(certificates);
                 var newCertificates = resumeDto.Certificates.ToList();
                 int numberOfOldCertificates = certificates.Count;
                 int numberOfNewCertificates = certificates.Count;
@@ -445,8 +468,11 @@ namespace Online_CV_Builder.Services
                     }
                     else
                     {
-                        var newCertificateEntity = _mapper.Map<Certificates>(certificates[i]);
-                        certificates[i] = newCertificateEntity;
+                        certificates[i].CertificateName = newCertificates[i].CertificateName;
+                        certificates[i].IssuingOrganization = newCertificates[i].IssuingOrganization;
+                        certificates[i].IssueDate = newCertificates[i].IssueDate;
+                        
+                        await _dbContext.SaveChangesAsync();
                     }
                 }
 
@@ -465,12 +491,11 @@ namespace Online_CV_Builder.Services
             if(resumeDto.Languages != null)
             {
                 var updatedLanguages = resumeDto.Languages.ToList();
-                var languageIds = await _dbContext.ResumeLanguages
-                 .Where(rl => rl.ResumeId == resumeId)
-                 .Select(rl => rl.LanguageId)
-                 .ToListAsync();
+               
+                var resumeLanguages = await _dbContext.ResumeLanguages.Where(rl => rl.ResumeId == resumeId).ToListAsync();
+                _dbContext.ResumeLanguages.AttachRange(resumeLanguages);
                 int numberOfUpdatedLanguages = updatedLanguages.Count;
-                int numberOfOldLanguages = languageIds.Count;
+                int numberOfOldLanguages = resumeLanguages.Count;
                
                 int numberOfLanguage = 0;
                 foreach(var newLanguage in updatedLanguages)
@@ -484,10 +509,19 @@ namespace Online_CV_Builder.Services
                         if(oldLanguage.LanguageName == newLanguage.LanguageName &&  oldLanguage.ProficiencyLevel == newLanguage.ProficiencyLevel)
                         {
                             oldLanguageId = oldLanguage.Id;
-                            languageIds[numberOfLanguage] = oldLanguageId;
+                            //resumeLanguages[numberOfLanguage].LanguageId = oldLanguageId;
+                            _dbContext.ResumeLanguages.Remove(resumeLanguages[numberOfLanguage]);
+                            var newResumeLanguage = new ResumeLanguages()
+                            {
+                                LanguageId = oldLanguageId,
+                                ResumeId = resumeId
+                            };
+                            _dbContext.ResumeLanguages.Add(newResumeLanguage);
+                            
                             break;
                         }
                     }
+                    await _dbContext.SaveChangesAsync();
 
                     // if there isn't such a language in the db
                     if(oldLanguageId == null)
@@ -519,7 +553,15 @@ namespace Online_CV_Builder.Services
                             else
                             {
                                 // we update the value of the oldLanguageId
-                                languageIds[numberOfLanguage] = newLanguageId;
+                                _dbContext.ResumeLanguages.Remove(resumeLanguages[numberOfLanguage]);
+                                var newResumeLanguage = new ResumeLanguages()
+                                {
+                                    LanguageId = newLanguageId,
+                                    ResumeId = resumeId
+                                };
+                                _dbContext.ResumeLanguages.Add(newResumeLanguage);
+                                //resumeLanguages[numberOfLanguage].LanguageId = newLanguageId;
+                                await _dbContext.SaveChangesAsync();
                             }
 
                     }
@@ -532,10 +574,11 @@ namespace Online_CV_Builder.Services
                 {
                     for(int i = numberOfUpdatedLanguages; i < numberOfOldLanguages; i++)
                     {
-                        var removedLanguage = _dbContext.ResumeLanguages.Where(rl => rl.ResumeId == resumeId && rl.LanguageId == languageIds[i]).FirstOrDefault();
+                        var removedLanguage = _dbContext.ResumeLanguages.Where(rl => rl.ResumeId == resumeId && rl.LanguageId == resumeLanguages[i].LanguageId).FirstOrDefault();
                         _dbContext.ResumeLanguages.Remove(removedLanguage);
+                        await _dbContext.SaveChangesAsync();
                     }
-                    await _dbContext.SaveChangesAsync();
+                    
                 }
                 
             }
@@ -543,12 +586,10 @@ namespace Online_CV_Builder.Services
             if(resumeDto.Skills != null)
             {
                 var updatedSkills = resumeDto.Skills.ToList();
-                var skillIds = await _dbContext.ResumeSkills
-                 .Where(rl => rl.ResumeId == resumeId)
-                 .Select(rl => rl.SkillId)
-                 .ToListAsync();
+                var resumeSkills = await _dbContext.ResumeSkills.Where(rs => rs.ResumeId == resumeId).ToListAsync();
+                _dbContext.ResumeSkills.AttachRange(resumeSkills);
                 int numberOfUpdatedSkills = updatedSkills.Count;
-                int numberOfOldSkills = skillIds.Count;
+                int numberOfOldSkills = resumeSkills.Count;
 
                 int numberOfSkill = 0;
                 foreach (var newSkill in updatedSkills)
@@ -562,10 +603,19 @@ namespace Online_CV_Builder.Services
                         if (oldSkill.SkillName == newSkill.SkillName)
                         {
                             oldSkillId = oldSkill.Id;
-                            skillIds[numberOfSkill] = oldSkillId;
+                            _dbContext.ResumeSkills.Remove(resumeSkills[numberOfSkill]);
+                            var newResumeSkill = new ResumeSkills()
+                            {
+                                SkillId = oldSkillId,
+                                ResumeId = resumeId
+                            };
+                            _dbContext.ResumeSkills.Add(newResumeSkill);
+                            //resumeSkills[numberOfSkill].SkillId = oldSkillId;
+                            
                             break;
                         }
                     }
+                    await _dbContext.SaveChangesAsync();
 
                     // if there isn't such a skill in the db
                     if (oldSkillId == null)
@@ -597,7 +647,15 @@ namespace Online_CV_Builder.Services
                         else
                         {
                             // we update the value of the oldSkillId
-                            skillIds[numberOfSkill] = newSkillId;
+                            _dbContext.ResumeSkills.Remove(resumeSkills[numberOfSkill]);
+                            var newResumeSkill = new ResumeSkills()
+                            {
+                                SkillId = newSkillId,
+                                ResumeId = resumeId
+                            };
+                            _dbContext.ResumeSkills.Add(newResumeSkill);
+                            //resumeSkills[numberOfSkill].SkillId = newSkillId;
+                            await _dbContext.SaveChangesAsync();
                         }
 
                     }
@@ -610,22 +668,21 @@ namespace Online_CV_Builder.Services
                 {
                     for (int i = numberOfUpdatedSkills; i < numberOfOldSkills; i++)
                     {
-                        var removedSkill = _dbContext.ResumeSkills.Where(rl => rl.ResumeId == resumeId && rl.SkillId == skillIds[i]).FirstOrDefault();
+                        var removedSkill = _dbContext.ResumeSkills.Where(rl => rl.ResumeId == resumeId && rl.SkillId == resumeSkills[i].SkillId).FirstOrDefault();
                         _dbContext.ResumeSkills.Remove(removedSkill);
+                        await _dbContext.SaveChangesAsync();
                     }
-                    await _dbContext.SaveChangesAsync();
+                    
                 }
             }
 
             if (resumeDto.Locations != null)
             {
                 var updatedLocations = resumeDto.Locations.ToList();
-                var locationIds = await _dbContext.ResumeLocations
-                 .Where(rl => rl.ResumeId == resumeId)
-                 .Select(rl => rl.LocationId)
-                 .ToListAsync();
+                var resumeLocations = await _dbContext.ResumeLocations.Where(rl => rl.ResumeId == resumeId).ToListAsync();
+                _dbContext.ResumeLocations.AttachRange(resumeLocations);
                 int numberOfUpdatedLocations = updatedLocations.Count;
-                int numberOfOldLocations = locationIds.Count;
+                int numberOfOldLocations = resumeLocations.Count;
 
                 int numberOfLocation = 0;
                 foreach (var newLocation in updatedLocations)
@@ -639,12 +696,21 @@ namespace Online_CV_Builder.Services
                         if (oldLocation.City == newLocation.City && oldLocation.State == newLocation.State && oldLocation.Country == newLocation.Country)
                         {
                             oldLocationId = oldLocation.Id;
-                            locationIds[numberOfLocation] = oldLocationId;
+                            _dbContext.ResumeLocations.Remove(resumeLocations[numberOfLocation]);
+                            var newResumeLocation = new ResumeLocations()
+                            {
+                                LocationId = oldLocationId,
+                                ResumeId = resumeId
+                            };
+                            _dbContext.ResumeLocations.Add(newResumeLocation);
+                            //resumeLocations[numberOfLocation].LocationId = oldLocationId;
+                            
                             break;
                         }
                     }
+                    await _dbContext.SaveChangesAsync();
 
-                    // if there isn't such a skill in the db
+                    // if there isn't such a location in the db
                     if (oldLocationId == null)
                     {
                         var newLocationEntity = _mapper.Map<Locations>(newLocation);
@@ -674,7 +740,15 @@ namespace Online_CV_Builder.Services
                         else
                         {
                             // we update the value of the oldSkillId
-                            locationIds[numberOfLocation] = newLocationId;
+                            _dbContext.ResumeLocations.Remove(resumeLocations[numberOfLocation]);
+                            var newResumeLocation = new ResumeLocations()
+                            {
+                                LocationId = newLocationId,
+                                ResumeId = resumeId
+                            };
+                            _dbContext.ResumeLocations.Add(newResumeLocation);
+                            //resumeLocations[numberOfLocation].LocationId = newLocationId;
+                            await _dbContext.SaveChangesAsync();
                         }
 
                     }
@@ -687,10 +761,11 @@ namespace Online_CV_Builder.Services
                 {
                     for (int i = numberOfUpdatedLocations; i < numberOfOldLocations; i++)
                     {
-                        var removedLocation = _dbContext.ResumeLocations.Where(rl => rl.ResumeId == resumeId && rl.LocationId == locationIds[i]).FirstOrDefault();
+                        var removedLocation = _dbContext.ResumeLocations.Where(rl => rl.ResumeId == resumeId && rl.LocationId == resumeLocations[i].LocationId).FirstOrDefault();
                         _dbContext.ResumeLocations.Remove(removedLocation);
+                        await _dbContext.SaveChangesAsync();
                     }
-                    await _dbContext.SaveChangesAsync();
+       
                 }
             }
             
