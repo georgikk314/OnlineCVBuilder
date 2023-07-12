@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Online_CV_Builder.Services;
+using System.Security.Claims;
 
 namespace Online_CV_Builder.Controllers
 {
@@ -6,13 +9,33 @@ namespace Online_CV_Builder.Controllers
     [ApiController]
     public class LogoutController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Logout()
+        private readonly IUserAuthenticationService _userAuthService;
+        public LogoutController(IUserAuthenticationService userAuthService) 
         {
-            // Perform logout operations here (e.g., clear session, invalidate tokens)
+            _userAuthService = userAuthService;
+        }
 
-            // Redirect user to home page
-            return RedirectToAction("LoggedOut", "Home");
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            var refreshToken = GetRefreshTokenFromClaims();
+
+            if (string.IsNullOrEmpty(refreshToken))
+                return BadRequest("Invalid refresh token");
+
+            await _userAuthService.LogoutAsync(refreshToken);
+
+            return Ok();
+        }
+
+        private string GetRefreshTokenFromClaims()
+        {
+            var refreshTokenClaim = HttpContext.User?.FindFirst("RefreshToken");
+
+            if (refreshTokenClaim != null)
+                return refreshTokenClaim.Value;
+
+            return null;
         }
     }
 }

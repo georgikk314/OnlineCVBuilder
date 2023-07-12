@@ -22,7 +22,14 @@ namespace Online_CV_Builder.Controllers
             try
             {
                 var user = await _userAuthService.RegisterAsync(registerDto);
-                return Ok(user);
+                var token = _userAuthService.GenerateJwtToken(user);
+                var userWithToken = new UserWithTokenDTO
+                {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Token = token
+                };
+                return Ok(userWithToken);
             }
             catch (ArgumentException ex)
             {

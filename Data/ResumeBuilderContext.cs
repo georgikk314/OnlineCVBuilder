@@ -66,6 +66,7 @@ namespace Online_CV_Builder.Data
                 .HasOne(rt => rt.Resume)
                 .WithMany(r => r.ResumeTemplates)
                 .HasForeignKey(rt => rt.ResumeId);
+            
         }
 
         public DbSet<Users> Users { get; set; }
@@ -82,5 +83,6 @@ namespace Online_CV_Builder.Data
         public DbSet<ResumeLocations> ResumeLocations { get; set; }
         public DbSet<Templates> Templates { get; set; }
         public DbSet<ResumeTemplates> ResumeTemplates { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

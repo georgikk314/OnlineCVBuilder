@@ -23,12 +23,12 @@ namespace Online_CV_Builder.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserDTO userDto)
         {
-            var user = await _userAuthService.AuthenticateAsync(userDto);
+            var userWithToken = await _userAuthService.AuthenticateAsync(userDto);
 
-            if (user == null)
+            if (userWithToken == null)
                 return Unauthorized();
 
-            return Ok(user);
+            return Ok(userWithToken);
         }
         
     }
