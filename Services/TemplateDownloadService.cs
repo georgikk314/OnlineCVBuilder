@@ -65,8 +65,72 @@ namespace Online_CV_Builder.Services
             var templateHtml = File.ReadAllText(templatePath);
 
             // Replace the placeholders in the template HTML with resume data
+            var personalInfo = _dbContext.PersonalInfos.FirstOrDefault(p => p.ResumeId == resume.Id);
             var htmlContent = templateHtml;
-                
+
+            // Personal Information
+            htmlContent = htmlContent.Replace("<!-- Title -->", resume.Title);
+            htmlContent = htmlContent.Replace("<!-- FullName -->", personalInfo.FullName);
+            htmlContent = htmlContent.Replace("<!-- PhoneNumber -->", personalInfo.PhoneNumber);
+            htmlContent = htmlContent.Replace("<!-- Email -->", personalInfo.Email);
+
+            // Locations
+            var resumeLocations = _dbContext.ResumeLocations.Where(rl => rl.ResumeId == resume.Id).ToList();
+            string locations = "";
+            foreach (var resumeLocation in resumeLocations)
+            {
+                var location = _dbContext.Locations.FirstOrDefault(l => l.Id == resumeLocation.LocationId);
+                locations += $"<span class=\"text\"> {location.Country}, {location.City}, {location.State} </span>";
+            }
+            htmlContent = htmlContent.Replace("<!-- Locations -->", locations);
+
+            // Education
+            var educations = _dbContext.Education.Where(e => e.ResumeId == resume.Id).OrderBy(e => e.StartDate).ToList();
+            string educationHtmlString = "";
+            foreach (var education in educations)
+            {
+                educationHtmlString += $"<li><h5>From {education.StartDate.Date} to {education.EndDate.Date}</h5><h4>I have a {education.Degree} in {education.FieldOfStudy}</h4><h4>I studied at {education.InstituteName}</h4></li>";
+            }
+            htmlContent = htmlContent.Replace("<!-- Educations -->", educationHtmlString);
+
+            // Languages
+            var resumeLanguages = _dbContext.ResumeLanguages.Where(rl => rl.ResumeId == resume.Id).ToList();
+            string languagesHtmlString = "";
+            foreach (var resumeLanguage in resumeLanguages)
+            {
+                var language = _dbContext.Languages.FirstOrDefault(l => l.Id == resumeLanguage.LanguageId);
+                languagesHtmlString += $"<li><span class=\"text\">{language.LanguageName} - {language.ProficiencyLevel}</span></li>";
+         
+            }
+            htmlContent = htmlContent.Replace("<!-- Languages -->", languagesHtmlString);
+
+            // Work Experience
+            var workExperiences = _dbContext.WorkExperiences.Where(e => e.ResumeId == resume.Id).OrderBy(e => e.StartDate).ToList();
+            string workExperienceHtmlString = "";
+            foreach(var workExperience in workExperiences)
+            {
+                workExperienceHtmlString += $"<p>From {workExperience.StartDate.Date} to {workExperience.EndDate.Date}<br>I worked at {workExperience.CompanyName} as {workExperience.Position}<br>{workExperience.Description}</p>";
+            }
+            htmlContent = htmlContent.Replace("<!-- Work Experiences -->", workExperienceHtmlString);
+
+            // Skills
+            var resumeSkills = _dbContext.ResumeSkills.Where(s => s.ResumeId == resume.Id).ToList();
+            string skillsHtmlString = "";
+            foreach (var resumeSkill in resumeSkills)
+            {
+                var skill = _dbContext.Skills.FirstOrDefault(s => s.Id == resumeSkill.SkillId);
+                skillsHtmlString += $"<p>{skill.SkillName}</p>";
+            }
+            htmlContent = htmlContent.Replace("<!-- Skills -->", skillsHtmlString);
+
+            // Certificates
+            var certificates = _dbContext.Certificates.Where(c => c.ResumeId == resume.Id).OrderBy(c => c.IssueDate).ToList();
+            string certificatesHtmlString = "";
+            foreach (var certificate in certificates)
+            {
+                certificatesHtmlString += $"<p>{certificate.CertificateName}<br>Issued by {certificate.IssuingOrganization}<br>On {certificate.IssueDate.Date}</p>";
+            }
+            htmlContent = htmlContent.Replace("<!-- Certificates -->", certificatesHtmlString);
 
             return htmlContent;
         }
