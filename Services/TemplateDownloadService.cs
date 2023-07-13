@@ -59,9 +59,9 @@ namespace Online_CV_Builder.Services
 
         }
 
-        private string ConstructHtmlContent(Templates template, Resumes resume)
+        public string ConstructHtmlContent(Templates template, Resumes resume)
         {
-            var templatePath = $"PathToTemplatesFolder/Template{template.Id}/Template{template.Id}.cshtml";
+            var templatePath = $"C:/Online CV Builder/Online CV Builder/Templates/Template{template.Id}/Template{template.Id}.cshtml";
             var templateHtml = File.ReadAllText(templatePath);
 
             // Replace the placeholders in the template HTML with resume data
@@ -135,7 +135,7 @@ namespace Online_CV_Builder.Services
             return htmlContent;
         }
 
-        private void GeneratePdfFromHtml(string htmlContent, string filePath)
+        public void GeneratePdfFromHtml(string htmlContent, string filePath)
         {
             // Create a new IronPdf.HtmlToPdf object
             var renderer = new IronPdf.HtmlToPdf();

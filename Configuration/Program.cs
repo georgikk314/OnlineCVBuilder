@@ -4,6 +4,7 @@ using Online_CV_Builder;
 using Online_CV_Builder.Data;
 using Online_CV_Builder.Data.Entities;
 using Online_CV_Builder.Models;
+using Online_CV_Builder.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<ResumeBuilderContext>(options =>
     }
 );
 
+builder.Services.AddScoped<ITemplateDownloadService, TemplateDownloadService>();
 
 var app = builder.Build();
 
