@@ -22,13 +22,6 @@ builder.Services.AddDbContext<ResumeBuilderContext>(options =>
     }
 );
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
-var mapperConfiguration = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile<MappingProfile>();
-});
-builder.Services.AddSingleton(mapperConfiguration.CreateMapper());
 
 var app = builder.Build();
 
