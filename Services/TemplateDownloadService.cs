@@ -84,7 +84,7 @@ namespace Online_CV_Builder.Services
             string educationHtmlString = "";
             foreach (var education in educations)
             {
-                educationHtmlString += $"<li><h5>From {education.StartDate.Date} to {education.EndDate.Date}</h5><h4>I studied at {education.InstituteName}</h4><h4>I have a {education.Degree} in {education.FieldOfStudy}</h4></li>";
+                educationHtmlString += $"<li><h5>From {education.StartDate.Value.Date} to {education.EndDate.Value.Date}</h5><h4>I studied at {education.InstituteName}</h4><h4>I have a {education.Degree} in {education.FieldOfStudy}</h4></li>";
             }
             htmlContent = htmlContent.Replace("<!-- Educations -->", educationHtmlString);
 
@@ -104,7 +104,7 @@ namespace Online_CV_Builder.Services
             string workExperienceHtmlString = "";
             foreach(var workExperience in workExperiences)
             {
-                workExperienceHtmlString += $"<p>From {workExperience.StartDate.Date} to {workExperience.EndDate.Date}<br>I worked at {workExperience.CompanyName} as {workExperience.Position}<br>{workExperience.Description}</p>";
+                workExperienceHtmlString += $"<p>From {workExperience.StartDate.Value.Date} to {workExperience.EndDate.Value.Date}<br>I worked at {workExperience.CompanyName} as {workExperience.Position}<br>{workExperience.Description}</p>";
             }
             htmlContent = htmlContent.Replace("<!-- Work Experiences -->", workExperienceHtmlString);
 
@@ -123,7 +123,7 @@ namespace Online_CV_Builder.Services
             string certificatesHtmlString = "";
             foreach (var certificate in certificates)
             {
-                certificatesHtmlString += $"<p>{certificate.CertificateName}<br>Issued by {certificate.IssuingOrganization}<br>On {certificate.IssueDate.Date}</p>";
+                certificatesHtmlString += $"<p>{certificate.CertificateName}<br>Issued by {certificate.IssuingOrganization}<br>On {certificate.IssueDate.Value.Date}</p>";
             }
             htmlContent = htmlContent.Replace("<!-- Certificates -->", certificatesHtmlString);
 
