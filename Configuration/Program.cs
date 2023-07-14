@@ -1,8 +1,11 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Online_CV_Builder;
 using Online_CV_Builder.Data;
-using Online_CV_Builder.MappingProfiles;
+using Online_CV_Builder.Data.Entities;
+using Online_CV_Builder.Models;
 using Online_CV_Builder.Services;
+using Online_CV_Builder.MappingProfiles;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +29,7 @@ builder.Services.AddDbContext<ResumeBuilderContext>(options =>
     }
 );
 
+
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var mapperConfiguration = new MapperConfiguration(cfg =>
@@ -34,7 +38,7 @@ var mapperConfiguration = new MapperConfiguration(cfg =>
 });
 builder.Services.AddSingleton(mapperConfiguration.CreateMapper());
 
-
+builder.Services.AddScoped<ITemplateDownloadService, TemplateDownloadService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
 
 var app = builder.Build();
@@ -52,3 +56,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

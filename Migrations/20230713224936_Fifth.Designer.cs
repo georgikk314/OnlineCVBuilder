@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Online_CV_Builder.Data;
 
@@ -11,9 +12,10 @@ using Online_CV_Builder.Data;
 namespace Online_CV_Builder.Migrations
 {
     [DbContext(typeof(ResumeBuilderContext))]
-    partial class ResumeBuilderContextModelSnapshot : ModelSnapshot
+    [Migration("20230713224936_Fifth")]
+    partial class Fifth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,22 +26,24 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.Certificates", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CertificateName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("IssueDate")
+                    b.Property<DateTime>("IssueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IssuingOrganization")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -67,28 +71,31 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.Education", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Degree")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FieldOfStudy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InstituteName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -120,16 +127,18 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.Languages", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("LanguageName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProficiencyLevel")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -153,16 +162,18 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.Locations", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
@@ -191,25 +202,29 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.PersonalInfo", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -239,10 +254,10 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.ResumeLanguages", b =>
                 {
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LanguageId")
+                    b.Property<int>("LanguageId")
                         .HasColumnType("int");
 
                     b.HasKey("ResumeId", "LanguageId");
@@ -271,10 +286,10 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.ResumeLocations", b =>
                 {
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LocationId")
+                    b.Property<int>("LocationId")
                         .HasColumnType("int");
 
                     b.HasKey("ResumeId", "LocationId");
@@ -298,22 +313,23 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.Resumes", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LastModifiedDate")
+                    b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -341,10 +357,10 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.ResumeSkills", b =>
                 {
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SkillId")
+                    b.Property<int>("SkillId")
                         .HasColumnType("int");
 
                     b.HasKey("ResumeId", "SkillId");
@@ -373,10 +389,10 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.ResumeTemplates", b =>
                 {
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TemplateId")
+                    b.Property<int>("TemplateId")
                         .HasColumnType("int");
 
                     b.HasKey("ResumeId", "TemplateId");
@@ -400,13 +416,14 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.Skills", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("SkillName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -433,16 +450,18 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.Templates", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("TemplateFilePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TemplateName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -466,19 +485,22 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.Users", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -488,28 +510,31 @@ namespace Online_CV_Builder.Migrations
 
             modelBuilder.Entity("Online_CV_Builder.Data.Entities.WorkExperience", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CompanyName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Position")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ResumeId")
+                    b.Property<int>("ResumeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
