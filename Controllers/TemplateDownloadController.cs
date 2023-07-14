@@ -27,6 +27,9 @@ namespace Online_CV_Builder.Controllers
                 // Download the file
                 await _templateDownloadService.PDFDownloader(filePath);
 
+                // Delete the file in the app storage
+                _templateDownloadService.DeletePdfTemplate(filePath);
+
                 // Return a success response
                 return Ok();
             }

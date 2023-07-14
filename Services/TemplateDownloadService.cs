@@ -25,15 +25,10 @@ namespace Online_CV_Builder.Services
                 throw new ArgumentException("Invalid resumeId.");
             }
 
-            string username = "georgikk";
+            string username = _dbContext.Users.FirstOrDefault(u => u.Id == resume.UserId).Username;
 
-            var folderPath = Path.Combine("PathToRootFolder", username, $"resume{resumeId}");
+            var folderPath = Path.Combine("UsersTemplates", username, $"resume{resumeId}");
 
-            // Create the user folder if it doesn't exist
-            if (!Directory.Exists(username))
-            {
-                Directory.CreateDirectory(username);
-            }
 
             // Create the resume folder if it doesn't exist
             if (!Directory.Exists(folderPath))
@@ -41,7 +36,7 @@ namespace Online_CV_Builder.Services
                 Directory.CreateDirectory(folderPath);
             }
 
-            var filePath = Path.Combine(folderPath, "resume.pdf");
+            var filePath = Path.Combine(folderPath, $"resume{resumeId}.pdf");
 
             var templateId = _dbContext.ResumeTemplates.FirstOrDefault(rt => rt.ResumeId == resumeId).TemplateId;
             var template = _dbContext.Templates.FirstOrDefault(t => t.Id == templateId);
@@ -89,7 +84,7 @@ namespace Online_CV_Builder.Services
             string educationHtmlString = "";
             foreach (var education in educations)
             {
-                educationHtmlString += $"<li><h5>From {education.StartDate.Date} to {education.EndDate.Date}</h5><h4>I have a {education.Degree} in {education.FieldOfStudy}</h4><h4>I studied at {education.InstituteName}</h4></li>";
+                educationHtmlString += $"<li><h5>From {education.StartDate.Date} to {education.EndDate.Date}</h5><h4>I studied at {education.InstituteName}</h4><h4>I have a {education.Degree} in {education.FieldOfStudy}</h4></li>";
             }
             htmlContent = htmlContent.Replace("<!-- Educations -->", educationHtmlString);
 
@@ -177,6 +172,27 @@ namespace Online_CV_Builder.Services
             string downloadsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string downloadedFilePath = System.IO.Path.Combine(downloadsPath, System.IO.Path.GetFileName(filePath));
             File.WriteAllBytes(downloadedFilePath, bytes);
+        }
+
+        public void DeletePdfTemplate(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+                else
+                {
+                    throw new FileNotFoundException("The PDF file does not exist.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions thrown during file deletion
+                Console.WriteLine($"Error deleting PDF file: {ex.Message}");
+                throw;
+            }
         }
     }
 }
