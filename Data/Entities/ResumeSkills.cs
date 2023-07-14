@@ -8,5 +8,5 @@
         public virtual Skills? Skill { get; set; }
     }
 
-    
+
 }

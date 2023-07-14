@@ -38,6 +38,7 @@ var mapperConfiguration = new MapperConfiguration(cfg =>
 });
 builder.Services.AddSingleton(mapperConfiguration.CreateMapper());
 
+builder.Services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 builder.Services.AddScoped<ITemplateDownloadService, TemplateDownloadService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder.Data.Entities;
 using Online_CV_Builder.Models;
 
@@ -9,7 +8,7 @@ namespace Online_CV_Builder.Data
     {
         public ResumeBuilderContext(DbContextOptions<ResumeBuilderContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Users> Users { get; set; }
@@ -26,6 +25,7 @@ namespace Online_CV_Builder.Data
         public DbSet<ResumeLocations> ResumeLocations { get; set; }
         public DbSet<Templates> Templates { get; set; }
         public DbSet<ResumeTemplates> ResumeTemplates { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -83,6 +83,7 @@ namespace Online_CV_Builder.Data
                 .HasOne(rt => rt.Resume)
                 .WithMany(r => r.ResumeTemplates)
                 .HasForeignKey(rt => rt.ResumeId);
+
 
 
             modelBuilder.Entity<Templates>().HasData
@@ -166,6 +167,5 @@ namespace Online_CV_Builder.Data
                 );
         }
 
-       
     }
 }

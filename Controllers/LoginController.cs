@@ -1,43 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Online_CV_Builder.Data;
+using Online_CV_Builder.DTOs;
+using Online_CV_Builder.Services;
+using System.Security.Cryptography;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Online_CV_Builder.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        // GET: api/<LoginController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IUserAuthenticationService _userAuthService;
+        public LoginController(IUserAuthenticationService userAuthService)
         {
-            return new string[] { "value1", "value2" };
+            _userAuthService = userAuthService;
         }
 
-        // GET api/<LoginController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserDTO userDto)
         {
-            return "value";
-        }
+            var userWithToken = await _userAuthService.AuthenticateAsync(userDto);
 
-        // POST api/<LoginController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+            if (userWithToken == null)
+                return Unauthorized();
 
-        // PUT api/<LoginController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            return Ok(userWithToken);
         }
-
-        // DELETE api/<LoginController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }
