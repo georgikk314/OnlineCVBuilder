@@ -6,13 +6,13 @@ namespace Online_CV_Builder.Data.Entities
     public class WorkExperience
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         [ForeignKey("Resumes")]
-        public int ResumeId { get; set; }
-        public string CompanyName { get; set; }
-        public string Position { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string Description { get; set; }
+        public int? ResumeId { get; set; }
+        public string? CompanyName { get; set; }
+        public string? Position { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string? Description { get; set; }
     }
 }

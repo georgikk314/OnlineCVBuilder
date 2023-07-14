@@ -2,9 +2,9 @@
 {
     public class ResumeLocations
     {
-        public int ResumeId { get; set; }
-        public int LocationId { get; set; }
-        public virtual Resumes Resume { get; set; }
-        public virtual Locations Location { get; set; }
+        public int? ResumeId { get; set; }
+        public int? LocationId { get; set; }
+        public virtual Resumes? Resume { get; set; }
+        public virtual Locations? Location { get; set; }
     }
 }

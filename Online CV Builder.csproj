@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <Folder Include="UsersTemplates\" />
+    <Folder Include="DTOs\UserAuthenticationRelatedDTOs\" />
+    <Folder Include="Models\" />
     <Folder Include="Settings\" />
   </ItemGroup>
 
