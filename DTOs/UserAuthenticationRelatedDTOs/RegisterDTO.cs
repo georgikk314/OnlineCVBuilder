@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Online_CV_Builder.DTOs
+namespace Online_CV_Builder.DTOs.UserAuthenticationRelatedDTOs
 {
     public class RegisterDTO
     {

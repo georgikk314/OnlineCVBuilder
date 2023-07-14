@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder.Data;
 using Online_CV_Builder.Data.Entities;
-using Online_CV_Builder.Models;
 
 namespace Online_CV_Builder.Controllers
 {

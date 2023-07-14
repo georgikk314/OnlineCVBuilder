@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Online_CV_Builder.DTOs
+namespace Online_CV_Builder.DTOs.UserAuthenticationRelatedDTOs
 {
     public class UserDTO
     {

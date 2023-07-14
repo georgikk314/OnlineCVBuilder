@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder;
 using Online_CV_Builder.Data;
 using Online_CV_Builder.Data.Entities;
-using Online_CV_Builder.Models;
 using Online_CV_Builder.Services;
 using Online_CV_Builder.MappingProfiles;
 using System.Text.Json.Serialization;

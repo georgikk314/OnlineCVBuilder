@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Online_CV_Builder.Data;
-using Online_CV_Builder.DTOs;
+using Online_CV_Builder.DTOs.UserAuthenticationRelatedDTOs;
 using Online_CV_Builder.Services;
 using System.Security.Cryptography;
 

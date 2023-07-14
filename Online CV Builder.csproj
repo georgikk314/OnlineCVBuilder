@@ -34,7 +34,6 @@
 
   <ItemGroup>
     <Folder Include="UsersTemplates\" />
-    <Folder Include="DTOs\UserAuthenticationRelatedDTOs\" />
   </ItemGroup>
 
 </Project>

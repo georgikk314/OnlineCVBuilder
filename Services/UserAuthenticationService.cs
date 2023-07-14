@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Online_CV_Builder.Data;
 using Online_CV_Builder.Data.Entities;
-using Online_CV_Builder.DTOs;
+using Online_CV_Builder.DTOs.UserAuthenticationRelatedDTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;

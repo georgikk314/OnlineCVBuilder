@@ -1,5 +1,5 @@
-﻿using Online_CV_Builder.DTOs;
-using Online_CV_Builder.Data.Entities;
+﻿using Online_CV_Builder.Data.Entities;
+using Online_CV_Builder.DTOs.UserAuthenticationRelatedDTOs;
 
 namespace Online_CV_Builder.Services
 {

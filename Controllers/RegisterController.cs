@@ -2,6 +2,7 @@
 using Online_CV_Builder.Data;
 using Online_CV_Builder.Data.Entities;
 using Online_CV_Builder.DTOs;
+using Online_CV_Builder.DTOs.UserAuthenticationRelatedDTOs;
 using Online_CV_Builder.Services;
 using System.Security.Cryptography;
 
