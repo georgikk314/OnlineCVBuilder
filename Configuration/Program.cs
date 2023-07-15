@@ -61,6 +61,7 @@ builder.Services.AddSingleton(mapperConfiguration.CreateMapper());
 builder.Services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 builder.Services.AddScoped<ITemplateDownloadService, TemplateDownloadService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
+builder.Services.AddScoped<IResumeSharingService, ResumeSharingService>();
 
 var app = builder.Build();
 
