@@ -148,6 +148,8 @@ namespace Online_CV_Builder.Services
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var secret = _configuration.GetValue<string>("Jwt:Secret");
+            var audience = "online-cv-builder-app";
+            var issuer = "your-application-domain.com";
 
             if (string.IsNullOrEmpty(secret))
             {
@@ -164,7 +166,9 @@ namespace Online_CV_Builder.Services
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim("RefreshToken", user.RefreshToken) // Include RefreshToken claim
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddMinutes(5),
+                Audience = audience,
+                Issuer = issuer,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

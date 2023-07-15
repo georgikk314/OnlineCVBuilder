@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Online_CV_Builder.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,6 +18,7 @@ namespace Online_CV_Builder.Controllers
         }
 
         [HttpGet("{resumeId}")]
+        [Authorize]
         public async Task<IActionResult> DownloadTemplate(int resumeId)
         {
             try

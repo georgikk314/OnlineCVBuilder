@@ -6,6 +6,9 @@ using Online_CV_Builder.Data.Entities;
 using Online_CV_Builder.Services;
 using Online_CV_Builder.MappingProfiles;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,24 @@ builder.Services.AddDbContext<ResumeBuilderContext>(options =>
     }
 );
 
+// Configure JWT authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("q3WQ2uRT@e0!$bnS"))
+    };
+});
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
@@ -50,6 +71,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
