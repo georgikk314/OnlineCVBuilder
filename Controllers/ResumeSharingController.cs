@@ -28,11 +28,12 @@ namespace Online_CV_Builder.Controllers
         {
             try
             {
-                string email = "gogomen05@abv.bg";
+                string email = "online.cv.builder23@gmail.com";
+                string password = "tuwmnijkpixhuiln";
                 var resumeId = sharingDto.ResumeId;
                 var recipientEmail = sharingDto.RecipientEmail;
                 var message = sharingDto.Message;
-                var smtpClient = _resumeSharingService.ConfigureSmtpClient(email, sharingDto.EmailUsername, sharingDto.EmailPassword);
+                var smtpClient = _resumeSharingService.ConfigureSmtpClient(email, email, password);
                 var attachmentFile = _templateDownloadService.ContructionOfTemplate(resumeId);
                 // Share the resume via email
                 await _resumeSharingService.SendEmailAsync(smtpClient, sharingDto.RecipientEmail, email, attachmentFile);

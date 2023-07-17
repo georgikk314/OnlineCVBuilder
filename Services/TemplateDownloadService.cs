@@ -56,7 +56,7 @@ namespace Online_CV_Builder.Services
 
         public string ConstructHtmlContent(Templates template, Resumes resume)
         {
-            var templatePath = $"C:/Online CV Builder/Online CV Builder/Templates/Template{template.Id}/Template{template.Id}.cshtml";
+            var templatePath = $"C:/Users/PC/source/repos/georgikk314/OnlineCVBuilder/Templates/Template{template.Id}/Template{template.Id}.cshtml";
             var templateHtml = File.ReadAllText(templatePath);
 
             // Replace the placeholders in the template HTML with resume data

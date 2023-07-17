@@ -46,7 +46,8 @@ namespace Online_CV_Builder.Services
                 }
             }
 
-            var userEmail = "gogomen2005@gmail.com";
+            var userEmail = "online.cv.builder23@gmail.com";
+            var passwordEmail = "kopvim458845!*&";
 
             // Create the email message
             var emailSubject = "Resume Sharing";
@@ -79,8 +80,8 @@ namespace Online_CV_Builder.Services
             string emailServer = email.Split('@').Last();
             // Configure the SMTP client with the provided email credentials
             var smtpClient = new SmtpClient($"smtp.{emailServer}");
-            smtpClient.Port = 465;
-            smtpClient.EnableSsl = false;
+            smtpClient.Port = 587;
+            smtpClient.EnableSsl = true;
             smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new NetworkCredential(emailUsername, emailPassword);
