@@ -25,10 +25,19 @@ namespace Online_CV_Builder_MVC.Controllers
 			if (ModelState.IsValid)
 			{
 				_jsonPayloadString.PersonalInfoPayload = model;
+				return RedirectToAction("Certificate", "ResumeBuilder");
 			}
 			return View(model);
 		}
-		
+		public IActionResult Certificate(CertificateViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				_jsonPayloadString.CertificatePayload = model;
+			}
+			return View(model);
+		}
+
 
 	}
 }
