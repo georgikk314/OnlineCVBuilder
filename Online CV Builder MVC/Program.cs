@@ -1,8 +1,10 @@
+using Online_CV_Builder_MVC.JsonPayload;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<JsonPayloadString>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
