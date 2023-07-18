@@ -130,5 +130,12 @@ namespace Online_CV_Builder_MVC.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            var response = await _httpClient.GetAsync($"{_apiBaseUrl}/logout");
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
