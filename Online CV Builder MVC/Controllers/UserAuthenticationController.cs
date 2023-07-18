@@ -59,16 +59,16 @@ namespace Online_CV_Builder_MVC.Controllers
                     }
                     else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
-                        ModelState.AddModelError(string.Empty, "Invalid username or password");
+                        ModelState.AddModelError("wngCred", "Invalid username or password");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "An error occurred while authenticating");
+                        ModelState.AddModelError("errAuth", "An error occurred while authenticating");
                     }
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+                    ModelState.AddModelError("err", $"An error occurred: {ex.Message}");
                 }
             }
 
