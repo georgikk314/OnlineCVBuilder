@@ -6,7 +6,7 @@ namespace Online_CV_Builder.DTOs.UserAuthenticationRelatedDTOs
     public class RegisterDTO
     {
         [Required, NotNull]
-        [StringLength(100)]
+        [StringLength(100), MinLength(3)]
         public string Username { get; set; } = string.Empty;
         [Required, EmailAddress, NotNull]
         [StringLength(100)]
