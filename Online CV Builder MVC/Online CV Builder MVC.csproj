@@ -7,4 +7,8 @@
     <RootNamespace>Online_CV_Builder_MVC</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Online CV Builder Web Api\Online CV Builder.csproj" />
+  </ItemGroup>
+
 </Project>
