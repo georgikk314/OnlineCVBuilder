@@ -34,10 +34,31 @@ namespace Online_CV_Builder_MVC.Controllers
 			if (ModelState.IsValid)
 			{
 				_jsonPayloadString.CertificatePayload = model;
+				return RedirectToAction("Education", "ResumeBuilder");
+
 			}
 			return View(model);
 		}
 
+		public IActionResult Education(EducationViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				_jsonPayloadString.EducationPayload = model;
+                return RedirectToAction("Skill", "ResumeBuilder");
 
-	}
+            }
+            return View(model);
+		}
+
+        public IActionResult Skill(SkillViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _jsonPayloadString.SkillPayload = model;
+            }
+            return View(model);
+        }
+
+    }
 }

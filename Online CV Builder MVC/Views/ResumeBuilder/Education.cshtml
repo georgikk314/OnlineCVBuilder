@@ -1,0 +1,52 @@
+﻿@model EducationViewModel
+@using (Html.BeginForm("Education", "ResumeBuilder"))
+{
+<div id="newEducation" style="width:55%; margin:10px;">
+        <div class="form-outline mb-3">
+            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter institute</label>
+            <br>
+            @Html.TextBoxFor(m=>m.InstituteName)
+            @Html.ValidationMessageFor(m => m.InstituteName)
+        </div>
+
+        <div class="form-outline mb-3">
+            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter degree</label>
+            <br>
+            @Html.TextBoxFor(m=>m.Degree)
+            @Html.ValidationMessageFor(m => m.Degree)
+        </div>
+
+        <div class="form-outline mb-3">
+            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter field of study</label>
+            <br>
+            @Html.TextBoxFor(m=>m.FieldOfStudy)
+            @Html.ValidationMessageFor(m => m.FieldOfStudy)
+        </div>
+
+        <div class="form-outline mb-3">
+            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter studying period</label>
+            <br>
+            @Html.TextBoxFor(m=>m.StartDate)
+            @Html.ValidationMessageFor(m => m.StartDate)
+            @Html.TextBoxFor(m=>m.EndDate)
+            @Html.ValidationMessageFor(m => m.EndDate)
+        </div>
+</div>
+    <button onclick="myFunction()">Add an education type</button>
+
+    
+    <button  type="submit" class="btn btn-primary">
+        Next step
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+        </svg>
+    </button>
+
+
+    <script>
+        function myFunction() {
+            const node = document.getElementById("newEducation");
+            const clone = node.cloneNode(true);
+        }
+    </script>
+}
