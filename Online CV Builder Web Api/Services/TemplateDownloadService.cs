@@ -130,7 +130,7 @@ namespace Online_CV_Builder.Services
             return htmlContent;
         }
 
-        public void GeneratePdfFromHtml(string htmlContent, string filePath)
+        public PdfDocument GeneratePdfFromHtml(string htmlContent, string filePath)
         {
             // Create a new IronPdf.HtmlToPdf object
             var renderer = new IronPdf.HtmlToPdf();
@@ -147,6 +147,9 @@ namespace Online_CV_Builder.Services
 
             // Save the PDF to the specified file path
             pdfDocument.SaveAs(filePath);
+
+            //Return the PDF file
+            return pdfDocument;
         }
 
         public async Task PDFDownloader(string filePath)
