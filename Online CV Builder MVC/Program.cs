@@ -5,7 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-
+builder.Services.AddStackExchangeRedisCache(option =>
+{
+	option.Configuration = "127.0.0.1";
+	option.InstanceName = "master";
+});
 builder.Services.AddScoped<JsonPayloadString>();
 var app = builder.Build();
 

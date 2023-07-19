@@ -1,0 +1,12 @@
+﻿@model SkillViewModel
+
+@using(Html.BeginForm("CreateSkill", "ResumeBuilder"))
+{
+	<div>
+		<label>Description of the skill</label>
+		@Html.TextBoxFor(m => m.SkillName)
+	</div>
+	<div>
+		<button>Save</button>
+	</div>
+}

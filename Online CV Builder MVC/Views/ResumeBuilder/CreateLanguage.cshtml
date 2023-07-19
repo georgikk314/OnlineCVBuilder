@@ -1,0 +1,19 @@
+﻿@model LanguageViewModel
+
+@using (Html.BeginForm("CreateLanguage", "ResumeBuilder"))
+{
+	<div>
+		<div>
+			<label>Name of the language</label>
+			@Html.TextBoxFor(m => m.LanguageName)
+		</div>
+		<div>
+			<label>Proficiency level</label>
+			@Html.TextBoxFor(m => m.ProficiencyLevel)
+		</div>
+		
+	</div>
+	<div>
+		<button>Save</button>
+	</div>
+}

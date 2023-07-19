@@ -1,0 +1,34 @@
+﻿@model CertificateViewModel
+@{
+    ViewData["Title"] = "Build your resume";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Certificate", "ResumeBuilder"))
+{
+    <div style="width:55%; margin:10px">
+        <div class="form-div">
+            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter the NAME of your certificate</label>
+            <br>
+            @Html.TextBoxFor(m=>m.CertificateName)
+            @Html.ValidationMessageFor(m => m.CertificateName)
+        </div>
+
+        <div class="form-div">
+            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter the ISSUING ORGANIZATION of your certificate</label>
+            <br>
+            @Html.TextBoxFor(m=>m.IssuingOrganization)
+            @Html.ValidationMessageFor(m => m.IssuingOrganization)
+        </div>
+
+        <div>
+            <label class="form-div" style="width: 100%;margin-top: 30px;" for="date">Enter the ISSUING DATE of your certificate</label>
+            <br>
+            @Html.TextBoxFor(m=>m.IssueDate)
+            @Html.ValidationMessageFor(m => m.IssueDate)
+        </div>
+    </div>
+
+    <button>Save</button>
+
+    
+}
