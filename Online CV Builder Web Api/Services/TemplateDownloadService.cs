@@ -20,6 +20,7 @@ namespace Online_CV_Builder.Services
  
             // Get the resume and user information based on the resumeId
             var resume = _dbContext.Resumes.FirstOrDefault(r => r.Id == resumeId);
+            
             if (resume == null)
             {
                 throw new ArgumentException("Invalid resumeId.");
@@ -36,7 +37,7 @@ namespace Online_CV_Builder.Services
                 Directory.CreateDirectory(folderPath);
             }
 
-            var filePath = Path.Combine(folderPath, $"resume{resumeId}.pdf");
+            var filePath = Path.Combine(folderPath, $"{resume.Title}.pdf");
 
             var templateId = _dbContext.ResumeTemplates.FirstOrDefault(rt => rt.ResumeId == resumeId).TemplateId;
             var template = _dbContext.Templates.FirstOrDefault(t => t.Id == templateId);
@@ -84,7 +85,7 @@ namespace Online_CV_Builder.Services
             string educationHtmlString = "";
             foreach (var education in educations)
             {
-                educationHtmlString += $"<li><h5>From {education.StartDate.Value.Date} to {education.EndDate.Value.Date}</h5><h4>I studied at {education.InstituteName}</h4><h4>I have a {education.Degree} in {education.FieldOfStudy}</h4></li>";
+                educationHtmlString += $"<li><h5>From {education.StartDate.Value.Month}/{education.StartDate.Value.Year} to {education.EndDate.Value.Month}/{education.EndDate.Value.Year}</h5><h4>I studied at {education.InstituteName}</h4><h4>I have a {education.Degree} in {education.FieldOfStudy}</h4></li>";
             }
             htmlContent = htmlContent.Replace("<!-- Educations -->", educationHtmlString);
 
@@ -104,7 +105,7 @@ namespace Online_CV_Builder.Services
             string workExperienceHtmlString = "";
             foreach(var workExperience in workExperiences)
             {
-                workExperienceHtmlString += $"<p>From {workExperience.StartDate.Value.Date} to {workExperience.EndDate.Value.Date}<br>I worked at {workExperience.CompanyName} as {workExperience.Position}<br>{workExperience.Description}</p>";
+                workExperienceHtmlString += $"<p>From {workExperience.StartDate.Value.Month}/{workExperience.StartDate.Value.Year} to {workExperience.EndDate.Value.Month}/{workExperience.EndDate.Value.Year}<br>I worked at {workExperience.CompanyName} as {workExperience.Position}<br>{workExperience.Description}</p>";
             }
             htmlContent = htmlContent.Replace("<!-- Work Experiences -->", workExperienceHtmlString);
 
@@ -123,7 +124,7 @@ namespace Online_CV_Builder.Services
             string certificatesHtmlString = "";
             foreach (var certificate in certificates)
             {
-                certificatesHtmlString += $"<p>{certificate.CertificateName}<br>Issued by {certificate.IssuingOrganization}<br>On {certificate.IssueDate.Value.Date}</p>";
+                certificatesHtmlString += $"<p>{certificate.CertificateName}<br>Issued by {certificate.IssuingOrganization}<br>On {certificate.IssueDate.Value.Month}/{certificate.IssueDate.Value.Year}</p>";
             }
             htmlContent = htmlContent.Replace("<!-- Certificates -->", certificatesHtmlString);
 
