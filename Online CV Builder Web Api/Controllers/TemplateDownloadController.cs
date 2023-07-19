@@ -44,7 +44,5 @@ namespace Online_CV_Builder.Controllers
                 return StatusCode(500, "An error occurred while generating the template.");
             }
         }
-
-
     }
 }

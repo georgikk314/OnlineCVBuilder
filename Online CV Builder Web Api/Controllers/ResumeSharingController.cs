@@ -23,7 +23,7 @@ namespace Online_CV_Builder.Controllers
 
         // POST api/sharing/{id}
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> ShareResume([FromBody] ResumeSharingDTO sharingDto)
         {
             try

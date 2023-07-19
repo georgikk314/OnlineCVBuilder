@@ -15,10 +15,13 @@ namespace Online_CV_Builder.Services
     {
         private readonly ResumeBuilderContext _dbContext;
         private readonly IConfiguration _configuration;
-        public UserAuthenticationService(ResumeBuilderContext dbContext, IConfiguration configuration)
+        //private readonly HttpContext _httpcontext;
+
+        public UserAuthenticationService(ResumeBuilderContext dbContext, IConfiguration configuration/*, HttpContext httpContext*/)
         {
             _dbContext = dbContext;
             _configuration = configuration;
+          //  _httpcontext = httpContext;
         }
         public async Task<Users> RegisterAsync(RegisterDTO registerDto)
         {
@@ -162,9 +165,9 @@ namespace Online_CV_Builder.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim("RefreshToken", user.RefreshToken) // Include RefreshToken claim
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim("RefreshToken", user.RefreshToken) // Include RefreshToken claim
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(5),
                 Audience = audience,
@@ -173,7 +176,17 @@ namespace Online_CV_Builder.Services
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var encryptedToken = tokenHandler.WriteToken(token);
+            /*
+            _httpcontext.Response.Cookies.Append("token", encryptedToken, new CookieOptions { 
+                Expires = DateTime.UtcNow.AddDays(7),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+            */
+            return encryptedToken;
         }
 
         /*
