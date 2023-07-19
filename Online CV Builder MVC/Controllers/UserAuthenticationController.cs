@@ -15,7 +15,7 @@ namespace Online_CV_Builder_MVC.Controllers
     {
         private readonly HttpClient _httpClient;
         //private readonly HttpContext _httpcontext;
-        private readonly string _apiBaseUrl = "http://localhost:5187/api"; // Update with your API base URL
+        private readonly string _apiBaseUrl = "http://localhost:5096/api"; // Update with your API base URL
 
         public UserAuthenticationController(HttpClient httpClient/*, HttpContext httpcontext, IHttpContextAccessor httpContextAccessor*/)
         {

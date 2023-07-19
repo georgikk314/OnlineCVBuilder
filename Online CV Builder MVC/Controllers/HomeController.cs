@@ -16,10 +16,6 @@ namespace Online_CV_Builder_MVC.Controllers
         {
             return View();
         }
-        public IActionResult ToResume()
-        {
-            return View();
-        }
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

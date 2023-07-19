@@ -12,6 +12,10 @@ namespace Online_CV_Builder_MVC.Controllers
     {
         string baseUrl = "http://localhost:5187";
         List<ClientViewModel> ClientInfo = new List<ClientViewModel>();
+        public IActionResult ToResume()
+        {
+            return View();
+        }
         public async Task<IActionResult> ToResumes()
         {
             using (var client = new HttpClient())
