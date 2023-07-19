@@ -10,7 +10,7 @@ namespace Online_CV_Builder_MVC.Models
         public string Username { get; set; }
         [Required]
         [MaxLength(100)]
-        [MinLength(3)]
+        [MinLength(10)]
         public string Password { get; set; }
     }
 }
