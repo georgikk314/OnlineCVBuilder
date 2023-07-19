@@ -1,4 +1,5 @@
 ﻿@model EducationViewModel
+<h1>Your education</h1>
 @using (Html.BeginForm("Education", "ResumeBuilder"))
 {
     <div class="progress">
@@ -6,38 +7,35 @@
     </div>
 <div id="newEducation" style="width:55%; margin:10px;">
         <div class="form-outline mb-3">
-            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter institute</label>
-            <br>
+            <label class="form-label" style="width: 100%;margin-top: 15px;" for="text">Enter institute</label>
+            
             @Html.TextBoxFor(m=>m.InstituteName)
             @Html.ValidationMessageFor(m => m.InstituteName)
         </div>
 
         <div class="form-outline mb-3">
-            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter degree</label>
-            <br>
+            <label class="form-label" style="width: 100%;margin-top: 15px;" for="text">Enter degree</label>
             @Html.TextBoxFor(m=>m.Degree)
             @Html.ValidationMessageFor(m => m.Degree)
         </div>
-
         <div class="form-outline mb-3">
-            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter field of study</label>
-            <br>
+            <label class="form-label" style="width: 100%;margin-top: 15px;" for="text">Enter field of study</label>
+            
             @Html.TextBoxFor(m=>m.FieldOfStudy)
             @Html.ValidationMessageFor(m => m.FieldOfStudy)
         </div>
-
+     
         <div class="form-outline mb-3">
-            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter studying period</label>
-            <br>
+            <label class="form-label" style="width: 100%;margin-top: 15px;" for="text">Enter studying period</label>
+            
             @Html.TextBoxFor(m=>m.StartDate)
             @Html.ValidationMessageFor(m => m.StartDate)
             @Html.TextBoxFor(m=>m.EndDate)
             @Html.ValidationMessageFor(m => m.EndDate)
         </div>
 </div>
-    <button onclick="myFunction()">Add an education type</button>
 
-    
+    <button onclick="myFunction()">Add an education type</button>
     <button  type="submit" class="btn btn-primary">
         Next step
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
