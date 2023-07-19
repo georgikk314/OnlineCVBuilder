@@ -49,6 +49,24 @@ namespace Online_CV_Builder_MVC.Controllers
 			return View(model);
 		}
 
+        public IActionResult Skill(SkillViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _jsonPayloadString.SkillPayload = model;
+				return RedirectToAction("WorkExperience", "ResumeBuilder");
+
+			}
+			return View(model);
+        }
+		public IActionResult WorkExperience(WorkExperienceViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				_jsonPayloadString.WorkExperiencePayload = model;
+			}
+			return View(model);
+		}
 
 	}
 }
