@@ -9,8 +9,7 @@ namespace Online_CV_Builder_MVC.JsonPayload
         public CertificateViewModel CertificatePayload { get; set; }
         public EducationViewModel EducationPayload { get; set; }
         public SkillViewModel SkillPayload { get; set; }
-
-        //public List<string> WorkExperiencesPayload { get; set; }
+        public WorkExperienceViewModel WorkExperiencePayload { get; set; }
 
     }
 }
