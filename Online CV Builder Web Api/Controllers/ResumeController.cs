@@ -15,38 +15,13 @@ namespace Online_CV_Builder.Controllers
     public class ResumeController : ControllerBase
     {
         private readonly IResumeService _resumeService;
-        public ResumeController(IResumeService resumeService)
+		private readonly ITemplateDownloadService _templateDownloadService;
+		public ResumeController(IResumeService resumeService, ITemplateDownloadService templateDownloadService)
         {
             _resumeService = resumeService;
-        }
-        private readonly ITemplateDownloadService _templateDownloadService;
-        public ResumeController(ITemplateDownloadService templateDownloadService)
-        {
             _templateDownloadService = templateDownloadService;
         }
-        private readonly ResumeBuilderContext _dbContext;
-        public ResumeController(ResumeBuilderContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-        // GET api/resumes/view/{id} - gives a specific resume in pdf format
-        [HttpGet("view/{resumeTemplateId}")]
-        [Authorize]
-        public PdfDocument ViewResumeAsPdf(int resumeTemplateId)
-        {
-            // Finds and gets the resume, template and resumetemplate entity based on an id
-            var resumeTemplate = _dbContext.ResumeTemplates.FirstOrDefault(rt => rt.Id == resumeTemplateId);
-            var resume = _dbContext.Resumes.FirstOrDefault(r => r.Id == resumeTemplate.ResumeId);
-            var template = _dbContext.Templates.FirstOrDefault(t => t.Id == resumeTemplate.TemplateId);
-            // Construct the template and get the file path
-            string filePath = _templateDownloadService.ContructionOfTemplate(resumeTemplate.ResumeId.GetValueOrDefault());
-            // Construct the resume as an html string
-            var htmlContent = _templateDownloadService.ConstructHtmlContent(template, resume);
-            // Generate a pdf file for the resume
-            var pdfFile = _templateDownloadService.GeneratePdfFromHtml(htmlContent, filePath);
-            // Return a success response with the file
-            return pdfFile;
-        }
+
 
         // POST api/resumes
         [HttpPost]

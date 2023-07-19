@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using NuGet.Protocol;
 using Online_CV_Builder.DTOs.UserAuthenticationRelatedDTOs;
-using Online_CV_Builder_MVC.JsonPayload;
 using Online_CV_Builder_MVC.Models;
 using System.Text.Json.Nodes;
 using System.Text.Json;
@@ -14,7 +13,6 @@ namespace Online_CV_Builder_MVC.Controllers
 {
 	public class ResumeBuilderController : Controller
 	{
-		private JsonPayloadString _jsonPayloadString;
 		private IMemoryCache _cache;
 		private IMemoryCache _skillCache;
 		private IMemoryCache _languageCache;
@@ -24,9 +22,8 @@ namespace Online_CV_Builder_MVC.Controllers
 		private HttpClient _httpClient;
         private readonly string _apiBaseUrl = "http://localhost:5096/api"; // API base URL
 
-        public ResumeBuilderController(JsonPayloadString jsonPayloadString, IMemoryCache skillCache, IMemoryCache languageCache, IMemoryCache educationCache, IMemoryCache workExperienceCache, IMemoryCache certificateCache, IMemoryCache cache, HttpClient httpClient)
+        public ResumeBuilderController(IMemoryCache skillCache, IMemoryCache languageCache, IMemoryCache educationCache, IMemoryCache workExperienceCache, IMemoryCache certificateCache, IMemoryCache cache, HttpClient httpClient)
         {
-			_jsonPayloadString = jsonPayloadString;
 			_skillCache = skillCache;
 			_languageCache = languageCache;
 			_educationCache = educationCache;
@@ -107,7 +104,7 @@ namespace Online_CV_Builder_MVC.Controllers
 				_cache.Set<List<WorkExperienceViewModel>>("workExperiences", temp, cacheEntryOptions);
 			}
 
-			//model = (List<SkillViewModel>)_cache.Get("skills");
+			model = _cache.Get<List<WorkExperienceViewModel>>("workExperiences");
 			return View(model);
 		}
 
@@ -152,7 +149,7 @@ namespace Online_CV_Builder_MVC.Controllers
 				_cache.Set<List<EducationViewModel>>("educations", temp, cacheEntryOptions);
 			}
 
-			//model = (List<SkillViewModel>)_cache.Get("skills");
+			model = _cache.Get<List<EducationViewModel>>("educations");
 			return View(model);
 		}
 
@@ -196,7 +193,7 @@ namespace Online_CV_Builder_MVC.Controllers
 				_cache.Set<List<SkillViewModel>>("skills", temp, cacheEntryOptions);
 			}
 			
-			//model = (List<SkillViewModel>)_cache.Get("skills");
+			model = _cache.Get<List<SkillViewModel>>("skills");
             return View(model);
         }
 
@@ -240,7 +237,7 @@ namespace Online_CV_Builder_MVC.Controllers
 				_cache.Set<List<CertificateViewModel>>("certificates", temp, cacheEntryOptions);
 			}
 
-			//model = (List<SkillViewModel>)_cache.Get("skills");
+			model = _cache.Get<List<CertificateViewModel>>("certificates");
 			return View(model);
 		}
 
@@ -285,7 +282,7 @@ namespace Online_CV_Builder_MVC.Controllers
 				_cache.Set<List<LanguageViewModel>>("languages", temp, cacheEntryOptions);
 			}
 
-			//model = (List<SkillViewModel>)_cache.Get("skills");
+			model = _cache.Get<List<LanguageViewModel>>("languages");
 			return View(model);
 		}
 

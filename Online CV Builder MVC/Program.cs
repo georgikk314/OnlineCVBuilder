@@ -1,4 +1,3 @@
-using Online_CV_Builder_MVC.JsonPayload;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<JsonPayloadString>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

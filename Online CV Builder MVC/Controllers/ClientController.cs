@@ -22,10 +22,10 @@ namespace Online_CV_Builder_MVC.Controllers
             {
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Clear();
-                HttpResponseMessage Res = await client.GetAsync("api/resumes");
-                if (Res.IsSuccessStatusCode)
+                HttpResponseMessage response = await client.GetAsync("api/resumes");
+                if (response.IsSuccessStatusCode)
                 {
-                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                    var EmpResponse = response.Content.ReadAsStringAsync().Result;
                     // ClientInfo = JsonConvert.DeserializeObject<List<Client>>(EmpResponse);
                     return View(EmpResponse);
                 }
