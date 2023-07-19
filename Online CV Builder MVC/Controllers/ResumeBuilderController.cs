@@ -34,36 +34,50 @@ namespace Online_CV_Builder_MVC.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				return RedirectToAction("Skills", "ResumeBuilder");
+				return RedirectToAction("Education", "ResumeBuilder");
 			}
 			return View(model);
 		}
 
-		public IActionResult Certificate(CertificateViewModel model)
+
+        public IActionResult Education(EducationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _jsonPayloadString.EducationPayload = model;
+                return RedirectToAction("Skills", "ResumeBuilder");
+
+            }
+            return View(model);
+        }
+
+        public IActionResult Skills(SkillViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _jsonPayloadString.SkillPayload = model;
+                return RedirectToAction("Certificate", "ResumeBuilder");
+
+            }
+            return View(model);
+        }
+
+        public IActionResult Certificate(CertificateViewModel model)
 		{
 			if (ModelState.IsValid)
 			{
 				_jsonPayloadString.CertificatePayload = model;
 				return RedirectToAction("Languages", "ResumeBuilder");
+
 			}
 			return View(model);
 		}
 
-        public IActionResult Skill(SkillViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                _jsonPayloadString.SkillPayload = model;
-				return RedirectToAction("WorkExperience", "ResumeBuilder");
-
-			}
-			return View(model);
-        }
-		public IActionResult WorkExperience(WorkExperienceViewModel model)
+		public IActionResult Languages(LanguageViewModel model)
 		{
 			if (ModelState.IsValid)
 			{
-				_jsonPayloadString.WorkExperiencePayload = model;
+				return RedirectToAction("Index", "Home");
 			}
 			return View(model);
 		}
