@@ -1,0 +1,45 @@
+﻿@model WorkExperienceViewModel
+
+@using (Html.BeginForm("CreateWorkExperience", "ResumeBuilder"))
+{
+		<div style="width:55%; margin:10px">
+            <div class="form-div">
+                <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter the NAME of the company you work(ed) for</label>
+                <br>
+            @Html.TextBoxFor(m=>m.CompanyName)
+            @Html.ValidationMessageFor(m => m.CompanyName)
+            </div>
+
+            <div class="form-div">
+                <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter the POSITION that you were/are at</label>
+                <br>
+            @Html.TextBoxFor(m=>m.Position)
+            @Html.ValidationMessageFor(m => m.Position)
+            </div>
+
+            <div>
+                <label class="form-div" style="width: 100%;margin-top: 30px;" for="date">Enter the DATE OF YOUR APPOINTMENT</label>
+                <br>
+            @Html.TextBoxFor(m=>m.StartDate)
+            @Html.ValidationMessageFor(m => m.StartDate)
+            </div>
+
+            <div>
+                <label class="form-div" style="width: 100%;margin-top: 30px;" for="date">Enter the DATE OF YOUR QUIT</label>
+                <br>
+                @Html.TextBoxFor(m=>m.EndDate)
+                @Html.ValidationMessageFor(m => m.EndDate)
+            </div>
+
+            <div>
+                <label class="form-div" style="width: 100%;margin-top: 30px;" for="date">Provide some DESCRIPTION about your job</label>
+                <br>
+                @Html.TextBoxFor(m=>m.Description)
+                @Html.ValidationMessageFor(m => m.Description)
+            </div>
+        </div>
+			
+		<div>
+			<button>Save</button>
+		</div>
+}

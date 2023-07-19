@@ -1,35 +1,34 @@
-﻿@model LanguageViewModel
+﻿@model IEnumerable<LanguageViewModel>
 <h1>Your languages</h1>
-@using (Html.BeginForm("Languages", "ResumeBuilder"))
-{
-	<div id="languageCounter" style="width:55%; margin:10px">
-        <div class="form-outline mb-3">
-            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter your language</label>
-            <br>
-            @Html.TextBoxFor(m=>m.LanguageName)
-            @Html.ValidationMessageFor(m => m.LanguageName)
-        </div>
 
-        <div class="form-outline mb-3">
-            <label class="form-label" style="width: 100%;margin-top: 30px;" for="text">Enter your proficiency level</label>
-            <br>
-            @Html.TextBoxFor(m=>m.ProficiencyLevel)
-            @Html.ValidationMessageFor(m => m.ProficiencyLevel)
-        </div>
-	</div>
-    <button onclick="myFunction()">Add a new language</button>
+<div>
+	<a asp-controller="ResumeBuilder" asp-action="CreateLanguage" class="btn btn-primary">
+		Add New Language
+	</a>
+</div>
 
-    <button style="margin-top:150px;" type="submit" class="btn btn-primary">
-        Next step
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
-        </svg>
-    </button>
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Name of the language</th>
+			<th>Proficiency level</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null)
+		{
+			@foreach (var obj in Model)
+			{
+				<tr>
+					<td>
+						@obj.LanguageName
+					</td>
+					<td>
+						@obj.ProficiencyLevel
+					</td>
+				</tr>
+			}
+		}
 
-    <script>
-        function myFunction() {
-            const node = document.getElementById("languageCounter");
-            const clone = node.cloneNode(true);
-        }
-    </script>
-}
+	</tbody>
+</table>
