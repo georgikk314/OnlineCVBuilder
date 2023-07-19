@@ -4,7 +4,6 @@ namespace Online_CV_Builder_MVC.Models
 {
 	public class CertificateViewModel
 	{
-		[Required(ErrorMessage = "Certificate Name is required.")]
 		[StringLength(100, ErrorMessage = "Certificate Name cannot exceed 100 characters.")]
 		public string CertificateName { get; set; }
 
