@@ -352,7 +352,6 @@ namespace Online_CV_Builder.Services
                     //personalInfo = _mapper.Map<PersonalInfo>(resumeDto.PersonalInfo);
                     var oldPersonalInfo = resumeDto.PersonalInfo;
                     personalInfo.FullName = oldPersonalInfo.FullName;
-                    personalInfo.Address = oldPersonalInfo.Address;
                     personalInfo.PhoneNumber = oldPersonalInfo.PhoneNumber;
                     personalInfo.Email = oldPersonalInfo.Email;
                     await _dbContext.SaveChangesAsync();

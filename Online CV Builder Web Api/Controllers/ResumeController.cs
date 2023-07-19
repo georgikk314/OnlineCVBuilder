@@ -21,7 +21,6 @@ namespace Online_CV_Builder.Controllers
 
         // POST api/resumes
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateResume([FromBody] ResumeDTO resumeDto)
         {
             var resume = await _resumeService.CreateResumeAsync(resumeDto);
