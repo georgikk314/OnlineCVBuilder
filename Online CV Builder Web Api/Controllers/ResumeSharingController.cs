@@ -23,7 +23,6 @@ namespace Online_CV_Builder.Controllers
 
         // POST api/sharing/{id}
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> ShareResume([FromBody] ResumeSharingDTO sharingDto)
         {
             try
@@ -37,7 +36,7 @@ namespace Online_CV_Builder.Controllers
                 var attachmentFile = _templateDownloadService.ContructionOfTemplate(resumeId);
                 // Share the resume via email
                 await _resumeSharingService.SendEmailAsync(smtpClient, sharingDto.RecipientEmail, email, attachmentFile);
-                _templateDownloadService.DeletePdfTemplate(attachmentFile);
+                //_templateDownloadService.DeletePdfTemplate(attachmentFile);
                 return Ok();
             }
             catch (Exception ex)

@@ -21,6 +21,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<DataSeeder>();
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ResumeBuilderContext>(options =>
     {
@@ -78,6 +80,20 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+SeedData(app);
+
+void SeedData(IHost app)
+{
+	var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+	using (var scope = scopedFactory.CreateScope())
+	{
+		var service = scope.ServiceProvider.GetService<DataSeeder>();
+		service.Seed();
+
+	}
+}
 
 app.MapControllers();
 
