@@ -3,7 +3,12 @@
     ViewData["Title"] = "Build your resume";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <h1>Your skills</h1>
+<div class="progress">
+	<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
+</div>
+<br>
 
 <div>
 	<a asp-controller="ResumeBuilder" asp-action="CreateCertificate" class="btn btn-primary">
