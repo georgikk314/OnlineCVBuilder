@@ -163,21 +163,6 @@ namespace Online_CV_Builder.Data
 				_dbContext.ResumeTemplates.AddRange(resumeTemplates);
 				_dbContext.SaveChanges();
 			}
-
-				/*
-				_dbContext.PersonalInfos.AddRange(personalInfos);
-				_dbContext.WorkExperiences.AddRange(workExperiences);
-				_dbContext.Languages.AddRange(languages);
-				_dbContext.Skills.AddRange(skills);
-				_dbContext.Locations.AddRange(locations);
-				_dbContext.ResumeLanguages.AddRange(resumeLanguages);
-				_dbContext.ResumeLocations.AddRange(resumeLocations);
-				_dbContext.ResumeSkills.AddRange(resumeSkills);
-				_dbContext.Education.AddRange(educations);
-				_dbContext.Certificates.AddRange(certificates);
-				_dbContext.Templates.AddRange(templates);
-				_dbContext.ResumeTemplates.AddRange(resumeTemplates);
-				_dbContext.SaveChanges();*/
 			
 		}
 	}
