@@ -32,6 +32,15 @@ namespace Online_CV_Builder.Controllers
             return Ok(resume);
         }
 
+        // GET api/resumes/userView/{userId}
+        [HttpGet("userView/{userId}")]
+        //[Authorize]
+        public async Task<IActionResult> GetResumesByUserId(int userId)
+        {
+            var resumes = await _resumeService.GetResumeByUserIdAsync(userId);
+            return Ok(resumes);
+        }
+
         // GET api/resumes/{id}
         [HttpGet("{id}")]
         [Authorize]

@@ -240,6 +240,7 @@ namespace Online_CV_Builder.Services
             var resumeDto = new ResumeDTO()
             {
                 //UserId = (int)resumeEntity.UserId,
+                Title = resumeEntity.Title,
                 CreationDate = (DateTime)resumeEntity.CreationDate,
                 LastModifiedDate = (DateTime)resumeEntity.LastModifiedDate
             };
@@ -302,6 +303,25 @@ namespace Online_CV_Builder.Services
 
             return resumeDto;
         }
+
+        public async Task<List<ResumeOverviewDTO>> GetResumeByUserIdAsync(int userId)
+        {
+            List<ResumeOverviewDTO> resumes = new List<ResumeOverviewDTO>();
+            
+			foreach (var resume in _dbContext.Resumes.Where(r => r.UserId == userId).ToList())
+            {
+                ResumeDTO currResume = await GetResumeAsync((int)resume.Id);
+                var resumeOverview = new ResumeOverviewDTO
+                {
+                    ResumeTitle = currResume.Title,
+                    CreationDate = currResume.CreationDate,
+                    LastModifiedDate = currResume.LastModifiedDate
+                };
+				resumes.Add(resumeOverview);
+            }
+            return resumes;
+        }
+
 
         public async Task<bool> DeleteResumeAsync(int resumeId)
         {

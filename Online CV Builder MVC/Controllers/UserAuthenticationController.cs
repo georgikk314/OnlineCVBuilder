@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Online_CV_Builder_MVC.Controllers
 {
@@ -84,7 +85,7 @@ namespace Online_CV_Builder_MVC.Controllers
             var response = await _httpClient.GetAsync($"{_apiBaseUrl}/logout");
             return RedirectToAction("Index", "Home");
         }
-        // nameri nachin v logina da poluchavash tokena i da go zapisvash v cookie i pri authorizaciqta da go predstavqsh pred apito
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -117,7 +118,7 @@ namespace Online_CV_Builder_MVC.Controllers
                         // Store the token in a cookie
                         HttpContext.Response.Cookies.Append("token", userWithToken.Token, new CookieOptions
                         {
-                            Expires = DateTime.UtcNow.AddDays(7),
+                            Expires = DateTime.UtcNow.AddMinutes(10),
                             HttpOnly = true,
                             IsEssential = true,
                             Secure = true,

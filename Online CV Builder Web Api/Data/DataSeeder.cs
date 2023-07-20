@@ -17,12 +17,14 @@ namespace Online_CV_Builder.Data
 			{
 				var resumes = new List<Resumes>
 				{
-					new Resumes {UserId = 1, Title = "John's Resume" },
-					new Resumes {UserId = 2, Title = "Jane's Resume" }
+					new Resumes {UserId = 1, Title = "John's Resume", CreationDate = DateTime.Now, LastModifiedDate = DateTime.Now },
+					new Resumes {UserId = 2, Title = "Jane's Resume", CreationDate = DateTime.Now, LastModifiedDate = DateTime.Now }
 				};
 				_dbContext.Resumes.AddRange(resumes);
 				_dbContext.SaveChanges();
-
+			}
+			if (!_dbContext.PersonalInfos.Any())
+			{
 				var personalInfos = new List<PersonalInfo>
 				{
 					new PersonalInfo {ResumeId = _dbContext.Resumes.FirstOrDefault(r => r.UserId == 1).Id, FullName = "John Doe", PhoneNumber = "123456789", Email = "john.doe@example.com" , Address = "none"},
@@ -30,7 +32,7 @@ namespace Online_CV_Builder.Data
 				};
 				_dbContext.PersonalInfos.AddRange(personalInfos);
 				_dbContext.SaveChanges();
-			}
+			}			
 
 			if (!_dbContext.WorkExperiences.Any())
 			{

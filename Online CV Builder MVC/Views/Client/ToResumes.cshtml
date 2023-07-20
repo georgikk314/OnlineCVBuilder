@@ -1,19 +1,37 @@
-﻿@model IEnumerable<string>
+﻿@model IEnumerable<ResumeViewModel>
 @{
-    ViewData["Title"] = "ToResume";
-    int i = 0;
+	ViewData["Title"] = "Build your resume";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<title>
-    Resume by id
-</title>
 
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Resume title</th>
+			<th>Creation date</th>
+			<th>Last modified date</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null)
+		{
+			@foreach (var obj in Model)
+			{
+						<tr>
+							<td>
+						@obj.ResumeTitle
+							</td>
+							<td>
+						@obj.CreationDate
+							</td>
+							<td>
+						@obj.LastModifiedDate
+							</td>
 
-<!-- PDF.js CSS -->
-<link rel="stylesheet" href="/path/to/pdf.js-dist/web/viewer.css">
+						</tr>
+			}
+		}
 
-<!-- PDF.js library -->
-<script src="/path/to/pdf.js-dist/build/pdf.js"></script>
-
-<div id="pdfViewer"></div>
-
+	</tbody>
+</table>

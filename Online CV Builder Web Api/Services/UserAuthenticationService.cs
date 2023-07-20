@@ -64,7 +64,7 @@ namespace Online_CV_Builder.Services
             // Generate refresh token
             var refreshToken = GenerateRefreshToken();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+            user.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(10);
 
             // Save the new user to the database
             _dbContext.Users.Add(user);
@@ -86,7 +86,7 @@ namespace Online_CV_Builder.Services
             // Generate refresh token
             var refreshToken = GenerateRefreshToken();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+            user.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(10);
 
             // Save the changes to the database
             await _dbContext.SaveChangesAsync();
@@ -115,7 +115,7 @@ namespace Online_CV_Builder.Services
             // Generate new refresh token
             var newRefreshToken = GenerateRefreshToken();
             user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+            user.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(10);
 
             // Save the changes to the database
             await _dbContext.SaveChangesAsync();
@@ -167,9 +167,10 @@ namespace Online_CV_Builder.Services
                 {
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     new Claim("RefreshToken", user.RefreshToken) // Include RefreshToken claim
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddMinutes(10),
                 Audience = audience,
                 Issuer = issuer,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -177,28 +178,9 @@ namespace Online_CV_Builder.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var encryptedToken = tokenHandler.WriteToken(token);
-            /*
-            _httpcontext.Response.Cookies.Append("token", encryptedToken, new CookieOptions { 
-                Expires = DateTime.UtcNow.AddDays(7),
-                HttpOnly = true,
-                IsEssential = true,
-                Secure = true,
-                SameSite = SameSiteMode.None
-            });
-            */
+            
             return encryptedToken;
         }
-
-        /*
-        public async Task<Users> LoginAsync(UserDTO userDto)
-        {
-            var user = await AuthenticateAsync(userDto.Username, userDto.Password);
-
-            if (user == null)
-                throw new Exception("Invalid username or password.");
-
-            return user;
-        }*/
 
 
         private bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
