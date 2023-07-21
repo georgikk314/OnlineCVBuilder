@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Online_CV_Builder.Data;
 using Online_CV_Builder.Data.Entities;
 using Online_CV_Builder.DTOs.ResumeRelatedDTOs;
 using Online_CV_Builder.Services;
@@ -13,15 +15,17 @@ namespace Online_CV_Builder.Controllers
     public class ResumeController : ControllerBase
     {
         private readonly IResumeService _resumeService;
-
-        public ResumeController(IResumeService resumeService)
+		private readonly ITemplateDownloadService _templateDownloadService;
+		public ResumeController(IResumeService resumeService, ITemplateDownloadService templateDownloadService)
         {
             _resumeService = resumeService;
+            _templateDownloadService = templateDownloadService;
         }
+
 
         // POST api/resumes
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> CreateResume([FromBody] ResumeDTO resumeDto)
         {
             var resume = await _resumeService.CreateResumeAsync(resumeDto);
@@ -29,20 +33,27 @@ namespace Online_CV_Builder.Controllers
             return Ok(resume);
         }
 
-        
+        // GET api/resumes/userView/{userId}
+        [HttpGet("userView/{userId}")]
+        //[Authorize]
+        public async Task<IActionResult> GetResumesByUserId(int userId)
+        {
+            var resumes = await _resumeService.GetResumeByUserIdAsync(userId);
+            return Ok(resumes);
+        }
+
         // GET api/resumes/{id}
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetResume(int id)
         {
             var resume = await _resumeService.GetResumeAsync(id);
             return Ok(resume);
         }
 
-        
         // PUT api/resumes/{id}
         [HttpPut("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> UpdateResume(int id, [FromBody] ResumeDTO resumeDto)
         {
             var updatedResume = await _resumeService.UpdateResumeAsync(id, resumeDto);
@@ -56,7 +67,7 @@ namespace Online_CV_Builder.Controllers
 
         // DELETE api/resumes/{id}
         [HttpDelete("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> DeleteResume(int id)
         {
             var isDeleted = await _resumeService.DeleteResumeAsync(id);

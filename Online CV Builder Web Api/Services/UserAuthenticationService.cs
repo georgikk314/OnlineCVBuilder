@@ -15,10 +15,13 @@ namespace Online_CV_Builder.Services
     {
         private readonly ResumeBuilderContext _dbContext;
         private readonly IConfiguration _configuration;
-        public UserAuthenticationService(ResumeBuilderContext dbContext, IConfiguration configuration)
+        //private readonly HttpContext _httpcontext;
+
+        public UserAuthenticationService(ResumeBuilderContext dbContext, IConfiguration configuration/*, HttpContext httpContext*/)
         {
             _dbContext = dbContext;
             _configuration = configuration;
+          //  _httpcontext = httpContext;
         }
         public async Task<Users> RegisterAsync(RegisterDTO registerDto)
         {
@@ -61,7 +64,7 @@ namespace Online_CV_Builder.Services
             // Generate refresh token
             var refreshToken = GenerateRefreshToken();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+            user.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(10);
 
             // Save the new user to the database
             _dbContext.Users.Add(user);
@@ -83,7 +86,7 @@ namespace Online_CV_Builder.Services
             // Generate refresh token
             var refreshToken = GenerateRefreshToken();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+            user.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(10);
 
             // Save the changes to the database
             await _dbContext.SaveChangesAsync();
@@ -112,7 +115,7 @@ namespace Online_CV_Builder.Services
             // Generate new refresh token
             var newRefreshToken = GenerateRefreshToken();
             user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(7);
+            user.RefreshTokenExpiration = DateTime.UtcNow.AddMinutes(10);
 
             // Save the changes to the database
             await _dbContext.SaveChangesAsync();
@@ -162,30 +165,22 @@ namespace Online_CV_Builder.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim("RefreshToken", user.RefreshToken) // Include RefreshToken claim
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim("RefreshToken", user.RefreshToken) // Include RefreshToken claim
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddMinutes(10),
                 Audience = audience,
                 Issuer = issuer,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var encryptedToken = tokenHandler.WriteToken(token);
+            
+            return encryptedToken;
         }
-
-        /*
-        public async Task<Users> LoginAsync(UserDTO userDto)
-        {
-            var user = await AuthenticateAsync(userDto.Username, userDto.Password);
-
-            if (user == null)
-                throw new Exception("Invalid username or password.");
-
-            return user;
-        }*/
 
 
         private bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)

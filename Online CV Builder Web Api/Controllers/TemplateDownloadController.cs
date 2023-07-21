@@ -18,7 +18,7 @@ namespace Online_CV_Builder.Controllers
         }
 
         [HttpGet("{resumeId}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> DownloadTemplate(int resumeId)
         {
             try
@@ -44,7 +44,5 @@ namespace Online_CV_Builder.Controllers
                 return StatusCode(500, "An error occurred while generating the template.");
             }
         }
-
-
     }
 }

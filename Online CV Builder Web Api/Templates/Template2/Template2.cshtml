@@ -1,233 +1,232 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+
+<html>
+
 <head>
+    <link rel="stylesheet" href="style1.css">
     <meta charset="UTF-8">
-    <title><!-- Title --></title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
+    <title><!-- Title --></title>
+
     <style>
         * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: rgba(114, 222, 249, 0.351);
+            background: rgba(237, 239, 147, 0.674);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        #page {
-            height: 842px;
-            width: 595px;
-            min-width: 600px;
-            background: rgba(255, 255, 255, 0.282);
-            margin: 50px auto;
-            padding: 30px;
-            color: #000000;
-            border-radius: 8%;
-        }
-
-        .contact-info-box {
-            width: 70.9%;
-            display: inline-block;
-            background-color: rgb(2, 25, 74);
+        .container {
+            position: relative;
             width: 100%;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            color: aliceblue;
-            padding: 5px;
+            max-width: 1000px;
+            min-height: 100px;
+            background: #e76c6ca0;
+            margin: 50px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            box-shadow: 0 35px 55px rgb(0,0,0,0.1);
         }
 
-        .name {
-            margin-bottom: -5px;
+            .container .left_Side {
+                position: relative;
+                background: #a52e2ec2;
+                padding: 40px;
+            }
+
+        .profileText {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
         }
 
-        .job-title {
-            display: inline-block;
+
+            .profileText h2 {
+                color: #fff;
+                font-size: 1.5em;
+                margin-top: 20px;
+                text-transform: uppercase;
+                text-align: center;
+                font-weight: 600;
+                line-height: 1.4em;
+            }
+
+                .profileText h2 span {
+                    font-size: 0.8em;
+                    font-weight: 300;
+                }
+
+        .contactInfo {
+            padding-top: 40px;
+            justify-content: space-between;
+            line-height: 1.5em;
         }
 
-        .contact-details {
-            background: #275ce15c;
-            color: white;
-            text-align: center;
-            margin: auto;
-            margin-top: 25px;
-            padding: 5px;
-            font-size: 15px;
+        .title {
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .contactInfo ul {
+            position: relative;
+        }
+
+            .contactInfo ul li {
+                position: relative;
+                list-style: none;
+                margin: 10px 0;
+                cursor: pointer;
+            }
+
+                .contactInfo ul li .icon {
+                    display: inline-block;
+                    width: 30px;
+                    font-size: 18px;
+                    color: #f4f4f4;
+                }
+
+                .contactInfo ul li span {
+                    color: #e6a518;
+                    font-weight: 300;
+                }
+
+        .contactInfo.education li {
+            margin-bottom: 15px;
+        }
+
+        .contactInfo.education h5 {
+            color: #fbfbfb;
+            font-weight: 500;
+        }
+
+        .contactInfo.education h4:nth-child(2) {
+            color: #e6a518;
+            font-weight: 500;
+        }
+
+        .contactInfo.education h4 {
+            color: #e6a518;
+            font-weight: 300;
+        }
+
+        .contactInfo.language .percent {
+            position: relative;
             width: 100%;
+            height: 6px;
+            background: #031e2a;
+            display: block;
+            margin-top: 5px;
         }
 
-        #objective h3 {
-            border: 1px solid #d3d3d3;
-            text-transform: uppercase;
-            padding: 5px;
-            border-radius: 5px;
-            margin: 30px 0 10px;
+            .contactInfo.language .percent div {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                background: #ffffff;
+            }
+
+
+        .container .right_Side {
+            position: relative;
+            background: #f8f898;
+            padding: 40px;
         }
 
-        #objective p {
-            padding: 0 5px;
-            line-height: 25px;
-            font-size: 14px;
-            color: #000;
+        .about .title3 {
+            margin-top: 200px;
         }
 
-        #education h3 {
-            border: 1px solid #d3d3d3;
-            text-transform: uppercase;
-            padding: 5px;
-            border-radius: 5px;
-            margin: 30px 0 10px;
+        .summary {
+            margin-top: 200px;
         }
-
-        #education table td {
-            padding: 5px;
-            font-size: 14px;
-            color: #000;
-        }
-
-        .education1 {
-            margin-top: 20px;
-            margin-left: 20px;
-        }
-
-        #work h3 {
-            border: 1px solid #d3d3d3;
-            text-transform: uppercase;
-            padding: 5px;
-            border-radius: 5px;
-            margin: 30px 0 10px;
-        }
-
-        #work table td {
-            padding: 5px;
-            font-size: 14px;
-            color: #000;
-        }
-
-        #work table tr.work-1 td:first-child {
-            width: 120px;
-            color: gray;
-            padding-bottom: 25px;
-        }
-
-        #work table tr.work-1 td {
-            padding-bottom: 25px;
-        }
-
-        #work table tr.work-2 td:first-child {
-            width: 120px;
-            color: gray;
-        }
-
-        #bio-data h3 {
-            border: 1px solid #d3d3d3;
-            width: 110px;
-            text-transform: uppercase;
-            padding: 5px;
-            border-radius: 5px;
-            margin: 30px 0 10px;
-        }
-
-        #bio-data table td {
-            padding: 8px;
-            font-size: 15px;
-            color: #000;
-        }
-
-        #bio-data table tr td:first-child {
-            width: 200px;
-        }
-
-        #bio-data table tr td:nth-child(2) {
-            width: 300px;
-        }
-
-        .rightSide {
-            margin-left: 40%;
-            margin-top: -169px;
-        }
-
-        .rightSide1 {
-            margin-left: 55%;
-            margin-top: -170px;
-        }
-
     </style>
 
-    <div id="page">
-        <div class="photo-and-name">
-            <div class="contact-info-box">
-                <h1 class="name"><!-- FullName --></h1>
-                <br>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left_Side">
+            <div class="profileText">
+
+                <h2><!-- FullName --><br></h2>
             </div>
-        </div>
-        <div id="bio-data">
-            <h3>Network</h3>
-            <ul style="list-style: none;">
-                <li>
-                    <span class="icon">
-                        <i class="fa fa-phone-square" aria-hidden="true"></i>
-                    </span>
-                    <span class="text"><!-- PhoneNumber --></span>
-                </li>
-                <br>
-                <li>
-                    <span class="icon">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                    </span>
-                    <span class="text"><!-- Email --></span>
-                </li>
-                <br>
-                <li>
-                    <span class="icon">
-                        <i class="fa fa-map-marker" aria-hidden="true"></i>
-                    </span>
-                    <!-- Locations -->
-                </li>
-            </ul>
-        </div>
-        <div class="rightSide" id="bio-data">
-            <div class="language">
+            <div class="contactInfo">
+                <h3 class="title">Network</h3>
+                <ul>
+                    <li>
+                        <span class="icon">
+                            <i class="fa fa-phone-square" aria-hidden="true"></i>
+                        </span>
+                        <span class="text"><!-- PhoneNumber --></span>
+                    </li>
+                    <li>
+                        <span class="icon">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                        <span class="text"><!-- Email --></span>
+                    </li>
+                    <li>
+                        <span class="icon">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        </span>
+                        <!-- Locations -->
+                    </li>
+                </ul>
+            </div>
+
+
+
+            <div class="contactInfo education">
+                <h3 class="title">Education</h3>
+                <ul>
+                    <!-- Educations -->
+                </ul>
+            </div>
+            <div class="contactInfo language">
                 <h3 class="title">Language</h3>
-                <ul style="list-style: none;">
+                <ul>
                     <!-- Languages -->
                 </ul>
             </div>
-            <div class="rightSide1" id="bio-data">
-                <div class="skills">
-                    <h3 class="title">Skills</h3>
-                    <ul style="list-style: none;">
-                        <!-- Skills -->
-                    </ul>
-                </div>
+        </div>
+
+        <div class="right_Side">
+            <div class="about">
+                <h2 class="title2">Certificates</h2>
+                <br>
+                <!-- Certificates -->
             </div>
-        </div>
-        <div id="education">
-            <h3>Education</h3>
-            <div class="education1">
-                <!-- Educations -->
+            <div class="summary">
+                <h2 class="title2">Personal experience</h2>
+                <br>
+                <!-- Work Experiences -->
+            </div>
+            <div class="about">
+                <h2 class="title3">Skills</h2>
+                <br>
+                <!-- Skills -->
             </div>
 
         </div>
-        <div id="objective">
-            <h3>Personal experience</h3>
-            <!-- Work Experiences -->
-        </div>
-
-        <div id="objective">
-            <h3>Certificates</h3>
-            <!-- Certificates -->
-        </div>
-
-
-
     </div>
 
-
-
-
 </body>
+
 </html>

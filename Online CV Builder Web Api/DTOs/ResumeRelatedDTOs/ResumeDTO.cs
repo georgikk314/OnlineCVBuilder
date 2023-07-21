@@ -9,6 +9,7 @@ namespace Online_CV_Builder.DTOs.ResumeRelatedDTOs
         [Required(ErrorMessage = "Title is required.")]
         [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters.")]
         public string Title { get; set; }
+        public int TemplateId { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
         public PersonalInfoDTO PersonalInfo { get; set; }

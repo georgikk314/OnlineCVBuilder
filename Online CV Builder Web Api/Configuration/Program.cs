@@ -1,6 +1,5 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Online_CV_Builder;
 using Online_CV_Builder.Data;
 using Online_CV_Builder.Data.Entities;
 using Online_CV_Builder.Services;
@@ -11,7 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -23,6 +21,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<DataSeeder>();
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ResumeBuilderContext>(options =>
     {
@@ -30,17 +30,13 @@ builder.Services.AddDbContext<ResumeBuilderContext>(options =>
         options.UseLazyLoadingProxies();
     }
 );
-
-// Configure JWT authentication
+// Configure JWT authentication and add cookie as storage for user token
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;})
+.AddCookie(x => { x.Cookie.Name = "token"; } )
+.AddJwtBearer(options => { options.TokenValidationParameters = new TokenValidationParameters {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateIssuerSigningKey = true,
@@ -48,8 +44,16 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("q3WQ2uRT@e0!$bnS"))
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context => 
+        {
+            if (context.Request.Cookies.ContainsKey("token")) context.Token = context.Request.Cookies["token"];
+            return Task.CompletedTask;
+        }
+    };
+    //options.Events.OnMessageReceived = context => {
 });
-
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var mapperConfiguration = new MapperConfiguration(cfg =>
@@ -64,8 +68,6 @@ builder.Services.AddScoped<IResumeService, ResumeService>();
 builder.Services.AddScoped<IResumeSharingService, ResumeSharingService>();
 
 var app = builder.Build();
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -73,11 +75,25 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseRouting();
+app.UseRouting();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+SeedData(app);
+
+void SeedData(IHost app)
+{
+	var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+	using (var scope = scopedFactory.CreateScope())
+	{
+		var service = scope.ServiceProvider.GetService<DataSeeder>();
+		service.Seed();
+
+	}
+}
 
 app.MapControllers();
 

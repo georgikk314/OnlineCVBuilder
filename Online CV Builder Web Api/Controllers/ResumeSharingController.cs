@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Online_CV_Builder.Data;
 using Online_CV_Builder.DTOs.SharingRelatedDTOs;
 using Online_CV_Builder.Services;
 
@@ -14,14 +15,16 @@ namespace Online_CV_Builder.Controllers
     {
         private readonly IResumeSharingService _resumeSharingService;
         private readonly ITemplateDownloadService _templateDownloadService;
+        private readonly ResumeBuilderContext _dbContext;
 
-        public ResumeSharingController(IResumeSharingService resumeSharingService, ITemplateDownloadService templateDownloadService)
+        public ResumeSharingController(IResumeSharingService resumeSharingService, ITemplateDownloadService templateDownloadService, ResumeBuilderContext dbContext)
         {
             _resumeSharingService = resumeSharingService;
             _templateDownloadService = templateDownloadService;
+            _dbContext = dbContext;
         }
 
-        // POST api/sharing/{id}
+        // POST api/sharing
         [HttpPost]
         //[Authorize]
         public async Task<IActionResult> ShareResume([FromBody] ResumeSharingDTO sharingDto)
@@ -30,14 +33,16 @@ namespace Online_CV_Builder.Controllers
             {
                 string email = "online.cv.builder23@gmail.com";
                 string password = "tuwmnijkpixhuiln";
-                var resumeId = sharingDto.ResumeId;
+                var resumeTitle = sharingDto.ResumeTitle;
                 var recipientEmail = sharingDto.RecipientEmail;
                 var message = sharingDto.Message;
                 var smtpClient = _resumeSharingService.ConfigureSmtpClient(email, email, password);
+
+                var resumeId = (int)_dbContext.Resumes.FirstOrDefault(r => r.Title == resumeTitle).Id;
                 var attachmentFile = _templateDownloadService.ContructionOfTemplate(resumeId);
                 // Share the resume via email
                 await _resumeSharingService.SendEmailAsync(smtpClient, sharingDto.RecipientEmail, email, attachmentFile);
-                _templateDownloadService.DeletePdfTemplate(attachmentFile);
+                //_templateDownloadService.DeletePdfTemplate(attachmentFile);
                 return Ok();
             }
             catch (Exception ex)

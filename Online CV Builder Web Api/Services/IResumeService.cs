@@ -9,5 +9,6 @@ namespace Online_CV_Builder.Services
         Task<ResumeDTO> GetResumeAsync(int resumeId);
         Task<bool> DeleteResumeAsync(int resumeId);
         Task<Resumes> UpdateResumeAsync(int resumeId, ResumeDTO resumeDTO);
-    }
+		Task<List<ResumeOverviewDTO>> GetResumeByUserIdAsync(int userId);
+	}
 }

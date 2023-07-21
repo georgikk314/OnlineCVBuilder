@@ -226,6 +226,19 @@ namespace Online_CV_Builder.Services
                     _dbContext.Certificates.Add(certificate);
                 }
             }
+            await _dbContext.SaveChangesAsync();
+
+            //Create and associate Template
+            if(resumeDto.TemplateId != null)
+            {
+                var resumeTemplate = new ResumeTemplates
+                {
+                    ResumeId = resume.Id,
+                    TemplateId = resumeDto.TemplateId,
+
+                };
+                _dbContext.ResumeTemplates.Add(resumeTemplate);
+            }
 
             // Save changes after adding entities
             await _dbContext.SaveChangesAsync();
@@ -240,6 +253,7 @@ namespace Online_CV_Builder.Services
             var resumeDto = new ResumeDTO()
             {
                 //UserId = (int)resumeEntity.UserId,
+                Title = resumeEntity.Title,
                 CreationDate = (DateTime)resumeEntity.CreationDate,
                 LastModifiedDate = (DateTime)resumeEntity.LastModifiedDate
             };
@@ -303,6 +317,25 @@ namespace Online_CV_Builder.Services
             return resumeDto;
         }
 
+        public async Task<List<ResumeOverviewDTO>> GetResumeByUserIdAsync(int userId)
+        {
+            List<ResumeOverviewDTO> resumes = new List<ResumeOverviewDTO>();
+            
+			foreach (var resume in _dbContext.Resumes.Where(r => r.UserId == userId).ToList())
+            {
+                ResumeDTO currResume = await GetResumeAsync((int)resume.Id);
+                var resumeOverview = new ResumeOverviewDTO
+                {
+                    ResumeTitle = currResume.Title,
+                    CreationDate = currResume.CreationDate,
+                    LastModifiedDate = currResume.LastModifiedDate
+                };
+				resumes.Add(resumeOverview);
+            }
+            return resumes;
+        }
+
+
         public async Task<bool> DeleteResumeAsync(int resumeId)
         {
             var resume = await _dbContext.Resumes.FindAsync(resumeId);
@@ -352,7 +385,6 @@ namespace Online_CV_Builder.Services
                     //personalInfo = _mapper.Map<PersonalInfo>(resumeDto.PersonalInfo);
                     var oldPersonalInfo = resumeDto.PersonalInfo;
                     personalInfo.FullName = oldPersonalInfo.FullName;
-                    personalInfo.Address = oldPersonalInfo.Address;
                     personalInfo.PhoneNumber = oldPersonalInfo.PhoneNumber;
                     personalInfo.Email = oldPersonalInfo.Email;
                     await _dbContext.SaveChangesAsync();
