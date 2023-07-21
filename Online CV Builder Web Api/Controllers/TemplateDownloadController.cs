@@ -18,6 +18,7 @@ namespace Online_CV_Builder.Controllers
         }
 
         [HttpGet("{resumeId}")]
+        //[Authorize]
         public async Task<IActionResult> DownloadTemplate(int resumeId)
         {
             try

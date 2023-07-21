@@ -2,7 +2,7 @@
 {
     public class ResumeSharingDTO
     {
-        public int ResumeId { get; set; }
+        public string ResumeTitle { get; set; }
         public string RecipientEmail { get; set; }
         public string Message { get; set; }
     }

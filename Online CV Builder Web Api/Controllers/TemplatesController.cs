@@ -19,7 +19,7 @@ namespace Online_CV_Builder.Controllers
 
         // GET: api/Templates
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ActionResult<IEnumerable<Templates>>> GetTemplates()
         {
             var templatesData = await _dbContext.Templates.ToListAsync();

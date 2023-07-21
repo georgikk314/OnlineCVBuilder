@@ -2,7 +2,6 @@
 {
     public class ResumeTemplates
     {
-        public int? Id { get; set; }
         public int? ResumeId { get; set; }
         public int? TemplateId { get; set; }
         public virtual Resumes? Resume { get; set; }

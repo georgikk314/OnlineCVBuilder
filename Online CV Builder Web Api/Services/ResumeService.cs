@@ -226,6 +226,19 @@ namespace Online_CV_Builder.Services
                     _dbContext.Certificates.Add(certificate);
                 }
             }
+            await _dbContext.SaveChangesAsync();
+
+            //Create and associate Template
+            if(resumeDto.TemplateId != null)
+            {
+                var resumeTemplate = new ResumeTemplates
+                {
+                    ResumeId = resume.Id,
+                    TemplateId = resumeDto.TemplateId,
+
+                };
+                _dbContext.ResumeTemplates.Add(resumeTemplate);
+            }
 
             // Save changes after adding entities
             await _dbContext.SaveChangesAsync();

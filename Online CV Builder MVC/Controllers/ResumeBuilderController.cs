@@ -19,16 +19,18 @@ namespace Online_CV_Builder_MVC.Controllers
 		private IMemoryCache _educationCache;
 		private IMemoryCache _workExperienceCache;
 		private IMemoryCache _certificateCache;
+		private IMemoryCache _templateCache;
 		private HttpClient _httpClient;
         private readonly string _apiBaseUrl = "http://localhost:5096/api"; // API base URL
 
-        public ResumeBuilderController(IMemoryCache skillCache, IMemoryCache languageCache, IMemoryCache educationCache, IMemoryCache workExperienceCache, IMemoryCache certificateCache, IMemoryCache cache, HttpClient httpClient)
+        public ResumeBuilderController(IMemoryCache skillCache, IMemoryCache languageCache, IMemoryCache educationCache, IMemoryCache workExperienceCache, IMemoryCache certificateCache, IMemoryCache templateCache, IMemoryCache cache, HttpClient httpClient)
         {
 			_skillCache = skillCache;
 			_languageCache = languageCache;
 			_educationCache = educationCache;
 			_workExperienceCache = workExperienceCache;
 			_certificateCache = certificateCache;
+			_templateCache = templateCache;
 			_cache = cache;
 			_httpClient = httpClient;
         }
@@ -301,9 +303,54 @@ namespace Online_CV_Builder_MVC.Controllers
 			return View(model);
 		}
 
+		public IActionResult Templates()
+		{
+			return View();
+		}
+
+		public IActionResult Template1(TemplateViewModel model)
+		{
+			model.TemplateId = 1;
+			var cacheEntryOptions = new MemoryCacheEntryOptions()
+					.SetSlidingExpiration(TimeSpan.FromSeconds(600))
+					.SetAbsoluteExpiration(TimeSpan.FromSeconds(3600))
+					.SetPriority(CacheItemPriority.Normal)
+					.SetSize(4096);
+			_templateCache.Set<TemplateViewModel>("template", model, cacheEntryOptions);
+			return RedirectToAction("ResumeTitle", "ResumeBuilder");
+			
+		}
+
+		public IActionResult Template2(TemplateViewModel model)
+		{
+			model.TemplateId = 2;
+			var cacheEntryOptions = new MemoryCacheEntryOptions()
+					.SetSlidingExpiration(TimeSpan.FromSeconds(600))
+					.SetAbsoluteExpiration(TimeSpan.FromSeconds(3600))
+					.SetPriority(CacheItemPriority.Normal)
+					.SetSize(4096);
+			_templateCache.Set<TemplateViewModel>("template", model, cacheEntryOptions);
+			return RedirectToAction("ResumeTitle", "ResumeBuilder");
+
+		}
+
+		public IActionResult Template3(TemplateViewModel model)
+		{
+			model.TemplateId = 3;
+			var cacheEntryOptions = new MemoryCacheEntryOptions()
+					.SetSlidingExpiration(TimeSpan.FromSeconds(600))
+					.SetAbsoluteExpiration(TimeSpan.FromSeconds(3600))
+					.SetPriority(CacheItemPriority.Normal)
+					.SetSize(4096);
+			_templateCache.Set<TemplateViewModel>("template", model, cacheEntryOptions);
+			return RedirectToAction("ResumeTitle", "ResumeBuilder");
+
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> ResumeSave()
 		{
+			var template = _cache.Get<TemplateViewModel>("template");
 			var resumeTitle = _cache.Get<ResumeTitleViewModel>("resumeTitle");
 			var personalInfo = _cache.Get<PersonalInfoViewModel>("personalInfo");
 			var locations = _cache.Get<List<LocationViewModel>>("locations");
@@ -315,7 +362,9 @@ namespace Online_CV_Builder_MVC.Controllers
 
 			var requestBody = new
 			{
+				UserId = 2,
 				Title = resumeTitle.ResumeTitle,
+				TemplateId = template.TemplateId,
 				PersonalInfo = personalInfo,
 				Locations = locations,
 				WorkExperiences = workExperiences,
@@ -344,7 +393,9 @@ namespace Online_CV_Builder_MVC.Controllers
                 ModelState.AddModelError("err", "An enexpected error occurred!");
             }
 
-			return RedirectToAction("Index", "Home");
+			return RedirectToAction("ToResumes", "Client");
         }
+
+
 	}
 }

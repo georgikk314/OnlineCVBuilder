@@ -25,6 +25,7 @@ namespace Online_CV_Builder.Controllers
 
         // POST api/resumes
         [HttpPost]
+        //[Authorize]
         public async Task<IActionResult> CreateResume([FromBody] ResumeDTO resumeDto)
         {
             var resume = await _resumeService.CreateResumeAsync(resumeDto);
@@ -43,7 +44,7 @@ namespace Online_CV_Builder.Controllers
 
         // GET api/resumes/{id}
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetResume(int id)
         {
             var resume = await _resumeService.GetResumeAsync(id);
@@ -52,7 +53,7 @@ namespace Online_CV_Builder.Controllers
 
         // PUT api/resumes/{id}
         [HttpPut("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> UpdateResume(int id, [FromBody] ResumeDTO resumeDto)
         {
             var updatedResume = await _resumeService.UpdateResumeAsync(id, resumeDto);
@@ -66,7 +67,7 @@ namespace Online_CV_Builder.Controllers
 
         // DELETE api/resumes/{id}
         [HttpDelete("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> DeleteResume(int id)
         {
             var isDeleted = await _resumeService.DeleteResumeAsync(id);

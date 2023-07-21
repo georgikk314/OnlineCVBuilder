@@ -24,7 +24,6 @@ namespace Online_CV_Builder.Data
         public DbSet<ResumeLocations> ResumeLocations { get; set; }
         public DbSet<Templates> Templates { get; set; }
         public DbSet<ResumeTemplates> ResumeTemplates { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

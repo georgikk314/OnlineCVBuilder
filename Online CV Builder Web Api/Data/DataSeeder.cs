@@ -27,8 +27,8 @@ namespace Online_CV_Builder.Data
 			{
 				var personalInfos = new List<PersonalInfo>
 				{
-					new PersonalInfo {ResumeId = _dbContext.Resumes.FirstOrDefault(r => r.UserId == 1).Id, FullName = "John Doe", PhoneNumber = "123456789", Email = "john.doe@example.com" , Address = "none"},
-						new PersonalInfo { ResumeId = _dbContext.Resumes.FirstOrDefault(r => r.UserId == 2).Id, FullName = "Jane Smith", PhoneNumber = "987654321", Email = "jane.smith@example.com" , Address ="none"}
+					new PersonalInfo {ResumeId = _dbContext.Resumes.FirstOrDefault(r => r.UserId == 1).Id, FullName = "John Doe", PhoneNumber = "123456789", Email = "john.doe@example.com" },
+						new PersonalInfo { ResumeId = _dbContext.Resumes.FirstOrDefault(r => r.UserId == 2).Id, FullName = "Jane Smith", PhoneNumber = "987654321", Email = "jane.smith@example.com" }
 				};
 				_dbContext.PersonalInfos.AddRange(personalInfos);
 				_dbContext.SaveChanges();
