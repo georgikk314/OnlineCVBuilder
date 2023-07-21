@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ResumeViewModel>
+@{
+	ViewData["Title"] = "Build your resume";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Resume title</th>
+			<th>Creation date</th>
+			<th>Last modified date</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null)
+		{
+			@foreach (var obj in Model)
+			{
+						<tr>
+							<td>
+						@obj.ResumeTitle
+							</td>
+							<td>
+						@obj.CreationDate
+							</td>
+							<td>
+						@obj.LastModifiedDate
+							</td>
+
+						</tr>
+			}
+		}
+
+	</tbody>
+</table>
+
+<div>
+
+	<div>
+		<a asp-action="ResumeSharing" asp-controller="Client" class="btn btn-primary">Choose which resume to share</a>
+	</div>
+	<div>
+		<a asp-action="ResumeDownloading" asp-controller="Client" class="btn btn-primary">Choose which resume to download</a>
+	</div>
+
+</div>

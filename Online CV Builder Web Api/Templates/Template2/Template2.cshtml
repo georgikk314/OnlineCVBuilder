@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="stylesheet" href="style1.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title><!-- Title --></title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: rgba(237, 239, 147, 0.674);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 100px;
+            background: #e76c6ca0;
+            margin: 50px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            box-shadow: 0 35px 55px rgb(0,0,0,0.1);
+        }
+
+            .container .left_Side {
+                position: relative;
+                background: #a52e2ec2;
+                padding: 40px;
+            }
+
+        .profileText {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+
+            .profileText h2 {
+                color: #fff;
+                font-size: 1.5em;
+                margin-top: 20px;
+                text-transform: uppercase;
+                text-align: center;
+                font-weight: 600;
+                line-height: 1.4em;
+            }
+
+                .profileText h2 span {
+                    font-size: 0.8em;
+                    font-weight: 300;
+                }
+
+        .contactInfo {
+            padding-top: 40px;
+            justify-content: space-between;
+            line-height: 1.5em;
+        }
+
+        .title {
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .contactInfo ul {
+            position: relative;
+        }
+
+            .contactInfo ul li {
+                position: relative;
+                list-style: none;
+                margin: 10px 0;
+                cursor: pointer;
+            }
+
+                .contactInfo ul li .icon {
+                    display: inline-block;
+                    width: 30px;
+                    font-size: 18px;
+                    color: #f4f4f4;
+                }
+
+                .contactInfo ul li span {
+                    color: #e6a518;
+                    font-weight: 300;
+                }
+
+        .contactInfo.education li {
+            margin-bottom: 15px;
+        }
+
+        .contactInfo.education h5 {
+            color: #fbfbfb;
+            font-weight: 500;
+        }
+
+        .contactInfo.education h4:nth-child(2) {
+            color: #e6a518;
+            font-weight: 500;
+        }
+
+        .contactInfo.education h4 {
+            color: #e6a518;
+            font-weight: 300;
+        }
+
+        .contactInfo.language .percent {
+            position: relative;
+            width: 100%;
+            height: 6px;
+            background: #031e2a;
+            display: block;
+            margin-top: 5px;
+        }
+
+            .contactInfo.language .percent div {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                background: #ffffff;
+            }
+
+
+        .container .right_Side {
+            position: relative;
+            background: #f8f898;
+            padding: 40px;
+        }
+
+        .about .title3 {
+            margin-top: 200px;
+        }
+
+        .summary {
+            margin-top: 200px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="left_Side">
+            <div class="profileText">
+
+                <h2><!-- FullName --><br></h2>
+            </div>
+            <div class="contactInfo">
+                <h3 class="title">Network</h3>
+                <ul>
+                    <li>
+                        <span class="icon">
+                            <i class="fa fa-phone-square" aria-hidden="true"></i>
+                        </span>
+                        <span class="text"><!-- PhoneNumber --></span>
+                    </li>
+                    <li>
+                        <span class="icon">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                        <span class="text"><!-- Email --></span>
+                    </li>
+                    <li>
+                        <span class="icon">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        </span>
+                        <!-- Locations -->
+                    </li>
+                </ul>
+            </div>
+
+
+
+            <div class="contactInfo education">
+                <h3 class="title">Education</h3>
+                <ul>
+                    <!-- Educations -->
+                </ul>
+            </div>
+            <div class="contactInfo language">
+                <h3 class="title">Language</h3>
+                <ul>
+                    <!-- Languages -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="right_Side">
+            <div class="about">
+                <h2 class="title2">Certificates</h2>
+                <br>
+                <!-- Certificates -->
+            </div>
+            <div class="summary">
+                <h2 class="title2">Personal experience</h2>
+                <br>
+                <!-- Work Experiences -->
+            </div>
+            <div class="about">
+                <h2 class="title3">Skills</h2>
+                <br>
+                <!-- Skills -->
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

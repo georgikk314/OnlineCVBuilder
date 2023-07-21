@@ -1,0 +1,16 @@
+﻿@model DownloadViewModel
+
+<div>
+	@using (Html.BeginForm("Downloading", "Client"))
+	{
+			<label>Which resume you want to share</label>
+		@Html.TextBoxFor(m => m.ResumeTitle)
+		@Html.ValidationMessageFor(m => m.ResumeTitle)
+		<label>ResumeId</label>
+		@Html.TextBoxFor(m => m.ResumeId)
+		@Html.TextBoxFor(m => m.ResumeId)
+		<button>Download</button>
+		@*<a asp-action="Downloading" asp-controller="Client">Download</a>*@
+	}
+
+</div>

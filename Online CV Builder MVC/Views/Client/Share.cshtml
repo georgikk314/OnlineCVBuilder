@@ -1,0 +1,16 @@
+﻿@model ShareViewModel
+
+<div>
+	@using (Html.BeginForm("ShareWith", "Client", FormMethod.Post))
+	{
+		<label>Which resume you want to share</label>
+		@Html.TextBoxFor(m => m.ResumeTitle)
+		@Html.ValidationMessageFor(m => m.ResumeTitle)
+		<label>To which you want to send it</label>
+		@Html.TextBoxFor(m => m.RecipientEmail)
+		@Html.ValidationMessageFor(m => m.RecipientEmail)
+		<button>Share</button>
+		@*<a asp-action="ShareWith" asp-controller="Client">Share</a>*@
+	}
+	
+</div>
